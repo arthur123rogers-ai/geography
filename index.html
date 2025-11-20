@@ -731,9 +731,18 @@
       return remaining.slice(0, 3);
     }
 
-    function teamScore(team) {
+    function getBotDifficultyBonus(points) {
+      // The bot grows tougher as you climb ranks. Higher rank points add a flat bonus to the bot's team score.
+      if (points >= 400) return 18;
+      if (points >= 250) return 12;
+      if (points >= 150) return 8;
+      if (points >= 80) return 4;
+      return 0;
+    }
+
+    function teamScore(team, bonus = 0) {
       // Team score blends liveability averages with a little randomness to keep battles lively.
-      return team.reduce((sum, city) => sum + cityOverall(city), 0) + (Math.random() * 8 - 2);
+      return team.reduce((sum, city) => sum + cityOverall(city), 0) + bonus + (Math.random() * 8 - 2);
     }
 
     function adjustRatings(userTeam, botTeam, outcome) {
@@ -791,7 +800,8 @@
       const botTeam = pickBotTeam(userIndexes);
 
       const userScore = teamScore(userTeam);
-      const botScore = teamScore(botTeam);
+      const difficultyBonus = getBotDifficultyBonus(rankPoints);
+      const botScore = teamScore(botTeam, difficultyBonus);
       let outcome = 'draw';
       let winnerText = 'Draw! Both teams stayed neck and neck.';
 
@@ -812,6 +822,7 @@
         <p><strong>${winnerText}</strong> ${randomBattleFlavor()}</p>
         <p>Your team score: ${userScore.toFixed(1)} | Bot team score: ${botScore.toFixed(1)}</p>
         <p>Rewards: +${earned} tokens | Rank: ${getRankLabel(rankPoints)}</p>
+        <p class="small muted">Difficulty boost: Bot gained +${difficultyBonus.toFixed(1)} because you're ranked ${getRankLabel(rankPoints)}.</p>
         <div class="battle-summary">
           <p><strong>Rating changes:</strong></p>
           <ul>${ratingChanges.map(change => `<li>${change}</li>`).join('')}</ul>
