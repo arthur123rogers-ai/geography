@@ -210,12 +210,34 @@
     .small {
       font-size: 0.95rem;
     }
+
+    .meta-list, .rank-list {
+      list-style: none;
+      padding-left: 1rem;
+      margin: 0.5rem 0;
+      color: var(--muted);
+    }
+
+    .meta-list li, .rank-list li {
+      margin: 0.2rem 0;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.55rem;
+      background: #e8f5e9;
+      color: #2e7d32;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      margin-right: 0.25rem;
+    }
   </style>
 </head>
 <body>
   <header>
     <h1>Geography Liveability & Environment App</h1>
     <nav>
+      <a href="#howto">How to Play</a>
       <a href="#calculator">Calculator</a>
       <a href="#environment">Environment</a>
       <a href="#quiz">Quiz</a>
@@ -224,6 +246,47 @@
   </header>
 
   <main>
+    <section id="howto">
+      <h2>How to Play &amp; Explore</h2>
+      <div class="grid two-col">
+        <div class="info-card">
+          <h3>Step 1: Test a City</h3>
+          <p>Use the calculator to enter scores for stability, healthcare, culture &amp; environment, education, and infrastructure (0–100).</p>
+          <ul>
+            <li>Select a sample city to auto-fill numbers.</li>
+            <li>Press <strong>Calculate Liveability</strong> to see the rating label and explanation.</li>
+            <li>Compare your city’s score to the sample pick.</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h3>Step 2: Learn &amp; Quiz</h3>
+          <p>Open the Environment section for quick geography notes. Then hit <strong>Start Liveability &amp; Environment Quiz</strong> to check what you learned.</p>
+          <ul>
+            <li>Each question has four choices—pick one to see instant feedback.</li>
+            <li>Finish the set to view your final score and title.</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h3>Step 3: City Battle</h3>
+          <p>Draft three cities to face a bot. Every battle sums each city’s average score and adds a tiny random twist.</p>
+          <ul>
+            <li>Tick exactly three cities, then press <strong>Start Battle</strong>.</li>
+            <li>The bot drafts three others; highest team score wins.</li>
+            <li>Ratings shift up or down after every match—try different combos to climb.</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h3>Navigation Tips</h3>
+          <p>Use the top buttons to jump between sections. You can recalc, retake the quiz, or rebattle as many times as you like.</p>
+          <ul>
+            <li>Hover buttons to highlight them.</li>
+            <li>Reload the page to reset ratings.</li>
+            <li>Best viewed on modern browsers.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
     <section id="calculator">
       <h2>Liveability Calculator (EIU-style)</h2>
       <p class="muted">Enter scores for each category (0-100). The app averages them to estimate a liveability score.</p>
@@ -322,6 +385,58 @@
 
     <section id="battle">
       <h2>City Battle</h2>
+      <p class="muted">Draft three cities, battle a bot, earn tokens, and climb the liveability ladder.</p>
+      <div class="flex" style="gap: 1rem; align-items: center; flex-wrap: wrap;">
+        <div class="pill">Tokens: <span id="tokenCount">0</span></div>
+        <div class="pill">Rank: <span id="rankTitle">Rookie Planner</span></div>
+        <div class="pill">Career wins: <span id="winCount">0</span></div>
+      </div>
+      <p class="small muted">Start with one proud hometown. Win battles to gain tokens, buy new cities, and upgrade your squad to rule the league.</p>
+      <div class="city-list" id="cityList"></div>
+      <div class="flex" style="margin-top: 1rem; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+        <button id="battleBtn">Start Battle</button>
+        <span class="muted small">Pick exactly three owned cities. The bot drafts from what you leave behind.</span>
+      </div>
+      <div class="battle-box" id="battleResult"></div>
+      <div class="battle-box" aria-live="polite" style="margin-top: 1rem;">
+        <h3 style="margin-top: 0;">Upgrades &amp; Market</h3>
+        <div class="grid two-col">
+          <div>
+            <label for="upgradeSelect">Upgrade an owned city (+2 to all categories, max 100) — Cost: 20 tokens</label>
+            <select id="upgradeSelect"></select>
+            <button id="upgradeBtn" style="margin-top: 0.5rem;">Upgrade City</button>
+          </div>
+          <div>
+            <p class="muted small">Locked cities show a price tag. Buy them with tokens from victories to expand your draft pool.</p>
+            <p class="muted small">Tip: Higher liveability stats usually mean better battle scores, but surprise upsets can still happen.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="battle-box" style="margin-top: 1rem;">
+        <h3 style="margin-top: 0;">Rank Ladder &amp; Championship</h3>
+        <p class="muted small">Climb ranks to unlock tougher bots and tournaments that shower you with tokens.</p>
+        <ul class="rank-list" id="rankScale"></ul>
+        <div class="flex" style="gap: 0.5rem; margin-top: 0.75rem; align-items: center; flex-wrap: wrap;">
+          <button id="tournamentBtn">Enter Championship Tournament</button>
+          <span class="muted small">Unlocked at Continental Captain (250+ rank points). You must field your best 3-city team.</span>
+        </div>
+        <div class="result-box" id="tourneyResult" style="margin-top: 0.75rem;"></div>
+      </div>
+
+      <div class="battle-box" style="margin-top: 1rem;">
+        <h3 style="margin-top: 0;">Meta Watch &amp; Legends</h3>
+        <div class="grid two-col">
+          <div>
+            <p class="muted small">Cities trending in top ranks (highest ratings update after each match):</p>
+            <ul class="meta-list" id="metaList"></ul>
+          </div>
+          <div>
+            <p class="muted small">Best battlers and their average match scores:</p>
+            <ul class="meta-list" id="playerBoard"></ul>
+          </div>
+        </div>
+      </div>
       <p class="muted">Draft three cities, battle a bot, and watch ratings fluctuate after every match.</p>
       <div class="city-list" id="cityList"></div>
       <div class="flex" style="margin-top: 1rem;">
@@ -552,6 +667,54 @@
 
     // --- City Battle logic ---
     const cities = [
+      { name: 'Coastville', stability: 85, healthcare: 90, cultureEnv: 88, education: 80, infrastructure: 82, rating: 1500, owned: true, cost: 0, description: 'Sea breezes, safe harbours, and clean air make Coastville a balanced starter.', traits: ['coastal', 'health'] },
+      { name: 'Riverport', stability: 75, healthcare: 70, cultureEnv: 72, education: 78, infrastructure: 76, rating: 1450, owned: false, cost: 30, description: 'Trade-focused river city with solid schools and buzzing markets.', traits: ['coastal', 'transit'] },
+      { name: 'Desert City', stability: 60, healthcare: 55, cultureEnv: 50, education: 58, infrastructure: 62, rating: 1420, owned: false, cost: 20, description: 'Heat-tough residents rely on resourceful transport and creative cooling.', traits: ['resilient'] },
+      { name: 'Mountain Ridge', stability: 82, healthcare: 78, cultureEnv: 85, education: 74, infrastructure: 79, rating: 1490, owned: false, cost: 35, description: 'High-altitude haven with clear skies and strong safety numbers.', traits: ['mountain', 'resilient'] },
+      { name: 'Forest Glen', stability: 68, healthcare: 71, cultureEnv: 77, education: 69, infrastructure: 70, rating: 1440, owned: false, cost: 26, description: 'Green belts and bike trails fuel good health and calm commutes.', traits: ['green', 'culture'] },
+      { name: 'Harborview', stability: 80, healthcare: 82, cultureEnv: 79, education: 81, infrastructure: 83, rating: 1480, owned: false, cost: 36, description: 'Busy port with quality hospitals and swift ferries across the bay.', traits: ['coastal', 'transit'] },
+      { name: 'Lakeside', stability: 73, healthcare: 76, cultureEnv: 74, education: 77, infrastructure: 75, rating: 1460, owned: false, cost: 28, description: 'Waterfront promenades and tidy tram lines keep life flowing smoothly.', traits: ['coastal', 'education'] },
+      { name: 'Sunset Plains', stability: 65, healthcare: 68, cultureEnv: 69, education: 64, infrastructure: 66, rating: 1430, owned: false, cost: 22, description: 'Open skies, farm-fresh food, and long rail lines out to the horizon.', traits: ['culture', 'resilient'] },
+      { name: 'Aurora Heights', stability: 88, healthcare: 85, cultureEnv: 90, education: 84, infrastructure: 86, rating: 1525, owned: false, cost: 45, description: 'Glowing skyline, great museums, and stellar public transit keep morale high.', traits: ['culture', 'tech'] },
+      { name: 'Tidepool Borough', stability: 70, healthcare: 74, cultureEnv: 80, education: 72, infrastructure: 71, rating: 1455, owned: false, cost: 27, description: 'Marine parks and careful pollution controls boost culture and environment.', traits: ['coastal', 'green'] },
+      { name: 'Snowcap City', stability: 78, healthcare: 79, cultureEnv: 76, education: 82, infrastructure: 80, rating: 1475, owned: false, cost: 33, description: 'Winter-ready transit and reliable heating keep daily life steady.', traits: ['resilient', 'education'] },
+      { name: 'Coral Quay', stability: 69, healthcare: 73, cultureEnv: 81, education: 68, infrastructure: 72, rating: 1445, owned: false, cost: 25, description: 'Beachside arts scene with coral conservation projects and lively festivals.', traits: ['coastal', 'culture'] },
+      { name: 'Metro Nexus', stability: 77, healthcare: 80, cultureEnv: 78, education: 83, infrastructure: 88, rating: 1505, owned: false, cost: 42, description: 'Bullet trains, fibre internet, and night classes make this the mobility capital.', traits: ['transit', 'tech'] },
+      { name: 'Cedar Grove', stability: 72, healthcare: 74, cultureEnv: 79, education: 71, infrastructure: 73, rating: 1458, owned: false, cost: 29, description: 'Shaded bike boulevards and recycling hubs keep the air crisp.', traits: ['green'] },
+      { name: 'Glacier Bay', stability: 81, healthcare: 82, cultureEnv: 78, education: 75, infrastructure: 80, rating: 1492, owned: false, cost: 38, description: 'Cold seas, cable cars, and resilient housing handle storms with ease.', traits: ['coastal', 'mountain'] },
+      { name: 'Solaris Point', stability: 74, healthcare: 77, cultureEnv: 82, education: 79, infrastructure: 78, rating: 1478, owned: false, cost: 34, description: 'Solar farms and green roofs power lively neighbourhood squares.', traits: ['tech', 'green'] }
+    ];
+
+    let tokens = 60; // starter cash to recruit two allies quickly
+    let rankPoints = 0;
+    let wins = 0;
+    const userScores = [];
+
+    const rankScaleData = [
+      { label: 'Rookie Planner', min: 0, note: 'Learning drafts, light bots.' },
+      { label: 'Local Strategist', min: 80, note: 'Bots gain a small edge.' },
+      { label: 'Regional Rival', min: 150, note: 'Opponents coordinate synergies.' },
+      { label: 'Continental Captain', min: 250, note: 'Tournaments unlock, bots get serious boosts.' },
+      { label: 'World Dominator', min: 400, note: 'Top tier—expect heavy bonuses and championship finals.' }
+    ];
+
+    const proPlayers = [
+      { name: 'SkylineAce', avg: 182.5, rank: 'World Dominator' },
+      { name: 'HarborHero', avg: 176.4, rank: 'Continental Captain' },
+      { name: 'EcoSpark', avg: 170.2, rank: 'Regional Rival' }
+    ];
+
+    const tokenCount = document.getElementById('tokenCount');
+    const rankTitle = document.getElementById('rankTitle');
+    const winCount = document.getElementById('winCount');
+    const cityList = document.getElementById('cityList');
+    const upgradeSelect = document.getElementById('upgradeSelect');
+    const rankScale = document.getElementById('rankScale');
+    const metaList = document.getElementById('metaList');
+    const playerBoard = document.getElementById('playerBoard');
+    const tourneyResult = document.getElementById('tourneyResult');
+    const tournamentBtn = document.getElementById('tournamentBtn');
+
       { name: 'Coastville', stability: 85, healthcare: 90, cultureEnv: 88, education: 80, infrastructure: 82, rating: 1500 },
       { name: 'Riverport', stability: 75, healthcare: 70, cultureEnv: 72, education: 78, infrastructure: 76, rating: 1450 },
       { name: 'Desert City', stability: 60, healthcare: 55, cultureEnv: 50, education: 58, infrastructure: 62, rating: 1420 },
@@ -567,6 +730,111 @@
       return (city.stability + city.healthcare + city.cultureEnv + city.education + city.infrastructure) / 5;
     }
 
+    function getRankLabel(points) {
+      if (points >= 400) return 'World Dominator';
+      if (points >= 250) return 'Continental Captain';
+      if (points >= 150) return 'Regional Rival';
+      if (points >= 80) return 'Local Strategist';
+      return 'Rookie Planner';
+    }
+
+    function renderRankScale() {
+      rankScale.innerHTML = rankScaleData
+        .map(r => `<li><strong>${r.label}</strong> (${r.min}+ pts) — ${r.note}</li>`)
+        .join('');
+    }
+
+    function updateProgressUI() {
+      tokenCount.textContent = tokens;
+      rankTitle.textContent = getRankLabel(rankPoints);
+      winCount.textContent = wins;
+      tournamentBtn.disabled = rankPoints < 250;
+    }
+
+    function renderUpgradeOptions() {
+      const ownedCities = cities.filter(city => city.owned);
+      upgradeSelect.innerHTML = ownedCities.map(city => `<option value="${city.name}">${city.name}</option>`).join('');
+    }
+
+    function renderMetaWatch() {
+      const sorted = [...cities].sort((a, b) => b.rating - a.rating).slice(0, 5);
+      metaList.innerHTML = sorted
+        .map((city, idx) => `<li>#${idx + 1} ${city.name} — rating ${city.rating}, avg ${cityOverall(city).toFixed(1)}</li>`)
+        .join('');
+    }
+
+    function renderPlayerBoard() {
+      const userAvg = userScores.length
+        ? (userScores.reduce((sum, score) => sum + score, 0) / userScores.length).toFixed(1)
+        : '—';
+
+      const entries = [
+        `<li><strong>You</strong>: avg ${userAvg} | Rank ${getRankLabel(rankPoints)}</li>`
+      ].concat(proPlayers.map(p => `<li>${p.name}: avg ${p.avg} | Rank ${p.rank}</li>`));
+
+      playerBoard.innerHTML = entries.join('');
+    }
+
+    function traitCounts(team) {
+      return team.reduce((map, city) => {
+        (city.traits || []).forEach(t => {
+          map[t] = (map[t] || 0) + 1;
+        });
+        return map;
+      }, {});
+    }
+
+    function calculateSynergy(team) {
+      const counts = traitCounts(team);
+      const has = (t) => Boolean(counts[t]);
+      const num = (t) => counts[t] || 0;
+      let bonus = 0;
+      const notes = [];
+
+      if (num('coastal') >= 2) {
+        bonus += 6;
+        notes.push('Coastal chain: ports and ferries sync for +6.');
+      }
+      if (has('mountain') && has('education')) {
+        bonus += 4;
+        notes.push('Mountain knowledge: resilient schools add +4.');
+      }
+      if (num('green') >= 2) {
+        bonus += 5;
+        notes.push('Green grid: paired eco towns push clean power for +5.');
+      }
+      if (has('transit') && has('tech')) {
+        bonus += 5;
+        notes.push('Metro express: smart mobility adds +5.');
+      }
+      if (num('culture') >= 2) {
+        bonus += 4;
+        notes.push('Festival circuit: art scenes lift morale for +4.');
+      }
+      if (has('resilient') && has('health')) {
+        bonus += 3;
+        notes.push('Wellbeing duo: sturdy services and clinics add +3.');
+      }
+
+      return { bonus, notes };
+    }
+
+    function renderCities() {
+      cityList.innerHTML = cities.map((city, index) => {
+        const ownedBadge = city.owned ? '<span class="pill">Owned</span>' : '';
+        const buyButton = city.owned ? '' : `<button class="buy-btn" data-index="${index}" style="margin-top: 0.35rem;">Buy for ${city.cost} tokens</button>`;
+        const disabled = city.owned ? '' : 'disabled';
+
+        return `
+        <div class="city-card">
+          <div class="flex" style="justify-content: space-between; align-items: center;">
+            <h4>${city.name}</h4>
+            <input type="checkbox" class="city-pick" data-index="${index}" ${disabled} aria-label="Select ${city.name}">
+          </div>
+          <p class="score">Rating: ${city.rating}</p>
+          <p class="small muted">${city.description}</p>
+          <div class="small" style="margin: 0.25rem 0;">${(city.traits || []).map(t => `<span class="tag">${t}</span>`).join(' ')}</div>
+          <div class="flex small" style="flex-wrap: wrap; gap: 0.25rem;">
     function renderCities() {
       cityList.innerHTML = cities.map((city, index) => `
         <div class="city-card">
@@ -580,6 +848,43 @@
             <span class="pill">Stability ${city.stability}</span>
             <span class="pill">Health ${city.healthcare}</span>
             <span class="pill">Culture/Env ${city.cultureEnv}</span>
+            <span class="pill">Education ${city.education}</span>
+            <span class="pill">Infra ${city.infrastructure}</span>
+          </div>
+          <div class="flex" style="margin-top: 0.4rem; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+            ${ownedBadge}
+            ${city.owned ? '' : `<span class="pill" style="background:#fff4e5;color:#c25d00;">Cost: ${city.cost}</span>`}
+            ${buyButton}
+          </div>
+        </div>`;
+      }).join('');
+
+      document.querySelectorAll('.buy-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const index = Number(btn.dataset.index);
+          const city = cities[index];
+          if (city.owned) return;
+          if (tokens < city.cost) {
+            alert('Not enough tokens to buy this city. Win more battles!');
+            return;
+          }
+          tokens -= city.cost;
+          city.owned = true;
+          updateProgressUI();
+          renderCities();
+          renderUpgradeOptions();
+          renderMetaWatch();
+          renderPlayerBoard();
+        });
+      });
+    }
+
+    renderCities();
+    renderUpgradeOptions();
+    updateProgressUI();
+    renderRankScale();
+    renderMetaWatch();
+    renderPlayerBoard();
           </div>
         </div>
       `).join('');
@@ -590,6 +895,7 @@
     function pickUserTeam() {
       const selected = Array.from(document.querySelectorAll('.city-pick:checked')).map(cb => Number(cb.dataset.index));
       if (selected.length !== 3) {
+        alert('Please pick exactly three owned cities for your team.');
         alert('Please pick exactly three cities for your team.');
         return null;
       }
@@ -606,6 +912,26 @@
       return remaining.slice(0, 3);
     }
 
+    function getBotDifficultyBonus(points) {
+      // The bot grows tougher as you climb ranks. Higher rank points add a flat bonus to the bot's team score.
+      if (points >= 400) return 18;
+      if (points >= 250) return 12;
+      if (points >= 150) return 8;
+      if (points >= 80) return 4;
+      return 0;
+    }
+
+    function teamScore(team, bonus = 0) {
+      // Team score blends liveability averages, synergies, and a little randomness to keep battles lively.
+      const synergy = calculateSynergy(team);
+      const base = team.reduce((sum, city) => sum + cityOverall(city), 0);
+      return { total: base + synergy.bonus + bonus + (Math.random() * 8 - 2), synergy };
+    }
+
+    function adjustRatings(userTeam, botTeam, outcome) {
+      const changeWin = 18;
+      const changeLose = -12;
+      const changeDraw = 5;
     function teamScore(team) {
       // Team score is the sum of each city's average category score with a tiny random factor
       return team.reduce((sum, city) => sum + cityOverall(city), 0) + Math.random() * 5;
@@ -630,6 +956,35 @@
       return summary;
     }
 
+    function earnRewards(outcome) {
+      let earnedTokens = 0;
+      if (outcome === 'win') {
+        earnedTokens = 30;
+        rankPoints += 25;
+        wins += 1;
+      } else if (outcome === 'draw') {
+        earnedTokens = 10;
+        rankPoints += 10;
+      } else {
+        earnedTokens = 5;
+        rankPoints += 5;
+      }
+      tokens += earnedTokens;
+      updateProgressUI();
+      return earnedTokens;
+    }
+
+    function randomBattleFlavor() {
+      const moments = [
+        'A burst of green transit projects wowed the judges.',
+        'Healthcare teams pulled off smooth emergency drills.',
+        'Cultural festivals boosted morale mid-match.',
+        'A surprise heatwave tested infrastructure resilience.',
+        'Students rallied with quick-learning pop-up classes.'
+      ];
+      return moments[Math.floor(Math.random() * moments.length)];
+    }
+
     document.getElementById('battleBtn').addEventListener('click', () => {
       const userIndexes = Array.from(document.querySelectorAll('.city-pick:checked')).map(cb => Number(cb.dataset.index));
       const userTeam = pickUserTeam();
@@ -637,6 +992,111 @@
       const botTeam = pickBotTeam(userIndexes);
 
       const userScore = teamScore(userTeam);
+      const difficultyBonus = getBotDifficultyBonus(rankPoints);
+      const botScore = teamScore(botTeam, difficultyBonus);
+      let outcome = 'draw';
+      let winnerText = 'Draw! Both teams stayed neck and neck.';
+
+      if (userScore.total > botScore.total + 0.5) {
+        outcome = 'win';
+        winnerText = 'Victory! Your crew set the standard for liveability.';
+      } else if (botScore.total > userScore.total + 0.5) {
+        outcome = 'lose';
+        winnerText = 'Bot wins! Scout fresh upgrades and try again.';
+      }
+
+      const ratingChanges = adjustRatings(userTeam, botTeam, outcome);
+      const earned = earnRewards(outcome);
+      userScores.push(userScore.total);
+      renderCities();
+      renderUpgradeOptions();
+      renderMetaWatch();
+      renderPlayerBoard();
+
+      const synergyNote = userScore.synergy.notes.length ? userScore.synergy.notes.join(' ') : 'No special combo bonuses this time.';
+      document.getElementById('battleResult').innerHTML = `
+        <p><strong>${winnerText}</strong> ${randomBattleFlavor()}</p>
+        <p>Your team score: ${userScore.total.toFixed(1)} | Bot team score: ${botScore.total.toFixed(1)}</p>
+        <p>Rewards: +${earned} tokens | Rank: ${getRankLabel(rankPoints)}</p>
+        <p class="small muted">Difficulty boost: Bot gained +${difficultyBonus.toFixed(1)} because you're ranked ${getRankLabel(rankPoints)}.</p>
+        <p class="small">Synergy boosts: ${synergyNote}</p>
+        <div class="battle-summary">
+          <p><strong>Rating changes:</strong></p>
+          <ul>${ratingChanges.map(change => `<li>${change}</li>`).join('')}</ul>
+        </div>
+      `;
+    });
+
+    document.getElementById('tournamentBtn').addEventListener('click', () => {
+      if (rankPoints < 250) {
+        alert('Reach Continental Captain (250 rank points) to enter championships.');
+        return;
+      }
+
+      const userIndexes = Array.from(document.querySelectorAll('.city-pick:checked')).map(cb => Number(cb.dataset.index));
+      const userTeam = pickUserTeam();
+      if (!userTeam) return;
+      const botTeam = pickBotTeam(userIndexes);
+
+      const difficultyBonus = getBotDifficultyBonus(rankPoints) + 15; // finals are spicier
+      const rounds = [];
+      let userRoundWins = 0;
+      let botRoundWins = 0;
+      let userSum = 0;
+      let botSum = 0;
+
+      for (let i = 1; i <= 3; i++) {
+        const userScore = teamScore(userTeam);
+        const botScore = teamScore(botTeam, difficultyBonus);
+        userSum += userScore.total;
+        botSum += botScore.total;
+        if (userScore.total > botScore.total + 0.25) userRoundWins += 1;
+        else if (botScore.total > userScore.total + 0.25) botRoundWins += 1;
+        rounds.push(`Round ${i}: You ${userScore.total.toFixed(1)} vs Bot ${botScore.total.toFixed(1)}`);
+      }
+
+      let outcome = 'draw';
+      if (userRoundWins > botRoundWins) outcome = 'win';
+      else if (botRoundWins > userRoundWins) outcome = 'lose';
+
+      let tokenReward = 0;
+      let rankGain = 0;
+      let winnerLine = 'Championship draw! You split the glory.';
+
+      if (outcome === 'win') {
+        tokenReward = 120;
+        rankGain = 70;
+        wins += 2;
+        winnerLine = 'Champion! You swept the bracket and earned a huge token haul.';
+      } else if (outcome === 'lose') {
+        tokenReward = 35;
+        rankGain = 25;
+        winnerLine = 'Bot claimed the cup—train and try again.';
+      } else {
+        tokenReward = 60;
+        rankGain = 35;
+        wins += 1;
+      }
+
+      tokens += tokenReward;
+      rankPoints += rankGain;
+      const ratingChanges = adjustRatings(userTeam, botTeam, outcome);
+      userScores.push(userSum / 3);
+      renderCities();
+      renderUpgradeOptions();
+      renderMetaWatch();
+      renderPlayerBoard();
+      updateProgressUI();
+
+      const synergyNote = calculateSynergy(userTeam).notes.join(' ') || 'No special combo bonuses this time.';
+      tourneyResult.innerHTML = `
+        <p><strong>${winnerLine}</strong> Championship bonus difficulty: +${difficultyBonus.toFixed(1)}</p>
+        <p>Series result: ${userRoundWins}-${botRoundWins} (avg score you ${ (userSum / 3).toFixed(1) } vs bot ${ (botSum / 3).toFixed(1) })</p>
+        <p>Rewards: +${tokenReward} tokens | +${rankGain} rank points | Current rank: ${getRankLabel(rankPoints)}</p>
+        <p class="small">Synergy boosts applied: ${synergyNote}</p>
+        <div class="battle-summary">
+          <p><strong>Rounds:</strong></p>
+          <ul>${rounds.map(r => `<li>${r}</li>`).join('')}</ul>
       const botScore = teamScore(botTeam);
       let outcome = 'draw';
       let winnerText = 'Draw! Both teams were evenly matched.';
@@ -661,6 +1121,30 @@
           <ul>${ratingChanges.map(change => `<li>${change}</li>`).join('')}</ul>
         </div>
       `;
+    });
+
+    document.getElementById('upgradeBtn').addEventListener('click', () => {
+      const selectedName = upgradeSelect.value;
+      const city = cities.find(c => c.name === selectedName);
+      if (!city || !city.owned) {
+        alert('Pick an owned city to upgrade.');
+        return;
+      }
+      const cost = 20;
+      if (tokens < cost) {
+        alert('Not enough tokens for an upgrade. Win another battle!');
+        return;
+      }
+      tokens -= cost;
+      ['stability', 'healthcare', 'cultureEnv', 'education', 'infrastructure'].forEach(key => {
+        city[key] = Math.min(100, city[key] + 2);
+      });
+      city.rating += 8;
+      updateProgressUI();
+      renderCities();
+      renderUpgradeOptions();
+      renderMetaWatch();
+      renderPlayerBoard();
     });
 
     // Calculate once at start to show initial results
