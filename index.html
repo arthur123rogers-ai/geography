@@ -668,6 +668,8 @@
     // --- City Battle logic ---
     const cities = [
       { name: 'Coastville', stability: 85, healthcare: 90, cultureEnv: 88, education: 80, infrastructure: 82, rating: 1500, owned: true, cost: 0, description: 'Sea breezes, safe harbours, and clean air make Coastville a balanced starter.', traits: ['coastal', 'health'] },
+      { name: 'Riverport', stability: 75, healthcare: 70, cultureEnv: 72, education: 78, infrastructure: 76, rating: 1450, owned: true, cost: 0, description: 'Trade-focused river city with solid schools and buzzing markets.', traits: ['coastal', 'transit'] },
+      { name: 'Desert City', stability: 60, healthcare: 55, cultureEnv: 50, education: 58, infrastructure: 62, rating: 1420, owned: true, cost: 0, description: 'Heat-tough residents rely on resourceful transport and creative cooling.', traits: ['resilient'] },
       { name: 'Riverport', stability: 75, healthcare: 70, cultureEnv: 72, education: 78, infrastructure: 76, rating: 1450, owned: false, cost: 30, description: 'Trade-focused river city with solid schools and buzzing markets.', traits: ['coastal', 'transit'] },
       { name: 'Desert City', stability: 60, healthcare: 55, cultureEnv: 50, education: 58, infrastructure: 62, rating: 1420, owned: false, cost: 20, description: 'Heat-tough residents rely on resourceful transport and creative cooling.', traits: ['resilient'] },
       { name: 'Mountain Ridge', stability: 82, healthcare: 78, cultureEnv: 85, education: 74, infrastructure: 79, rating: 1490, owned: false, cost: 35, description: 'High-altitude haven with clear skies and strong safety numbers.', traits: ['mountain', 'resilient'] },
@@ -819,6 +821,23 @@
       return { bonus, notes };
     }
 
+    function ownedIndexes() {
+      return cities
+        .map((city, idx) => (city.owned ? idx : null))
+        .filter((idx) => idx !== null);
+    }
+
+    function autoSelectFirstOwned() {
+      const owned = ownedIndexes();
+      const picks = owned.slice(0, 3);
+      const checkboxes = document.querySelectorAll('.city-pick');
+      checkboxes.forEach(cb => {
+        const idx = Number(cb.dataset.index);
+        cb.checked = picks.includes(idx);
+      });
+      return picks.map(i => cities[i]);
+    }
+
     function renderCities() {
       cityList.innerHTML = cities.map((city, index) => {
         const ownedBadge = city.owned ? '<span class="pill">Owned</span>' : '';
@@ -877,6 +896,9 @@
           renderPlayerBoard();
         });
       });
+
+      // Keep teams ready by auto-selecting the first three owned cities when none are chosen
+      autoSelectFirstOwned();
     }
 
     renderCities();
@@ -885,6 +907,22 @@
     renderRankScale();
     renderMetaWatch();
     renderPlayerBoard();
+
+    function pickUserTeam() {
+      const selected = Array.from(document.querySelectorAll('.city-pick:checked')).map(cb => Number(cb.dataset.index));
+      if (selected.length === 3) {
+        return selected.map(i => cities[i]);
+      }
+
+      const owned = ownedIndexes();
+      if (owned.length < 3) {
+        alert('Own at least three cities (use the buy buttons) before battling.');
+        return null;
+      }
+
+      const autoTeam = owned.slice(0, 3).map(i => cities[i]);
+      autoSelectFirstOwned();
+      return autoTeam;
           </div>
         </div>
       `).join('');
