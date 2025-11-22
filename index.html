@@ -437,6 +437,13 @@
           </div>
         </div>
       </div>
+      <p class="muted">Draft three cities, battle a bot, and watch ratings fluctuate after every match.</p>
+      <div class="city-list" id="cityList"></div>
+      <div class="flex" style="margin-top: 1rem;">
+        <button id="battleBtn">Start Battle</button>
+        <span class="muted small">Pick exactly three cities for your team. The bot drafts from the rest.</span>
+      </div>
+      <div class="battle-box" id="battleResult"></div>
     </section>
   </main>
 
@@ -663,6 +670,8 @@
       { name: 'Coastville', stability: 85, healthcare: 90, cultureEnv: 88, education: 80, infrastructure: 82, rating: 1500, owned: true, cost: 0, description: 'Sea breezes, safe harbours, and clean air make Coastville a balanced starter.', traits: ['coastal', 'health'] },
       { name: 'Riverport', stability: 75, healthcare: 70, cultureEnv: 72, education: 78, infrastructure: 76, rating: 1450, owned: true, cost: 0, description: 'Trade-focused river city with solid schools and buzzing markets.', traits: ['coastal', 'transit'] },
       { name: 'Desert City', stability: 60, healthcare: 55, cultureEnv: 50, education: 58, infrastructure: 62, rating: 1420, owned: true, cost: 0, description: 'Heat-tough residents rely on resourceful transport and creative cooling.', traits: ['resilient'] },
+      { name: 'Riverport', stability: 75, healthcare: 70, cultureEnv: 72, education: 78, infrastructure: 76, rating: 1450, owned: false, cost: 30, description: 'Trade-focused river city with solid schools and buzzing markets.', traits: ['coastal', 'transit'] },
+      { name: 'Desert City', stability: 60, healthcare: 55, cultureEnv: 50, education: 58, infrastructure: 62, rating: 1420, owned: false, cost: 20, description: 'Heat-tough residents rely on resourceful transport and creative cooling.', traits: ['resilient'] },
       { name: 'Mountain Ridge', stability: 82, healthcare: 78, cultureEnv: 85, education: 74, infrastructure: 79, rating: 1490, owned: false, cost: 35, description: 'High-altitude haven with clear skies and strong safety numbers.', traits: ['mountain', 'resilient'] },
       { name: 'Forest Glen', stability: 68, healthcare: 71, cultureEnv: 77, education: 69, infrastructure: 70, rating: 1440, owned: false, cost: 26, description: 'Green belts and bike trails fuel good health and calm commutes.', traits: ['green', 'culture'] },
       { name: 'Harborview', stability: 80, healthcare: 82, cultureEnv: 79, education: 81, infrastructure: 83, rating: 1480, owned: false, cost: 36, description: 'Busy port with quality hospitals and swift ferries across the bay.', traits: ['coastal', 'transit'] },
@@ -708,6 +717,17 @@
     const tourneyResult = document.getElementById('tourneyResult');
     const tournamentBtn = document.getElementById('tournamentBtn');
 
+      { name: 'Coastville', stability: 85, healthcare: 90, cultureEnv: 88, education: 80, infrastructure: 82, rating: 1500 },
+      { name: 'Riverport', stability: 75, healthcare: 70, cultureEnv: 72, education: 78, infrastructure: 76, rating: 1450 },
+      { name: 'Desert City', stability: 60, healthcare: 55, cultureEnv: 50, education: 58, infrastructure: 62, rating: 1420 },
+      { name: 'Mountain Ridge', stability: 82, healthcare: 78, cultureEnv: 85, education: 74, infrastructure: 79, rating: 1490 },
+      { name: 'Forest Glen', stability: 68, healthcare: 71, cultureEnv: 77, education: 69, infrastructure: 70, rating: 1440 },
+      { name: 'Harborview', stability: 80, healthcare: 82, cultureEnv: 79, education: 81, infrastructure: 83, rating: 1480 },
+      { name: 'Lakeside', stability: 73, healthcare: 76, cultureEnv: 74, education: 77, infrastructure: 75, rating: 1460 },
+      { name: 'Sunset Plains', stability: 65, healthcare: 68, cultureEnv: 69, education: 64, infrastructure: 66, rating: 1430 }
+    ];
+
+    const cityList = document.getElementById('cityList');
     function cityOverall(city) {
       return (city.stability + city.healthcare + city.cultureEnv + city.education + city.infrastructure) / 5;
     }
@@ -834,6 +854,15 @@
           <p class="small muted">${city.description}</p>
           <div class="small" style="margin: 0.25rem 0;">${(city.traits || []).map(t => `<span class="tag">${t}</span>`).join(' ')}</div>
           <div class="flex small" style="flex-wrap: wrap; gap: 0.25rem;">
+    function renderCities() {
+      cityList.innerHTML = cities.map((city, index) => `
+        <div class="city-card">
+          <div class="flex" style="justify-content: space-between; align-items: center;">
+            <h4>${city.name}</h4>
+            <input type="checkbox" class="city-pick" data-index="${index}" aria-label="Select ${city.name}">
+          </div>
+          <p class="score">Rating: ${city.rating}</p>
+          <div class="flex small">
             <span class="pill">Avg: ${cityOverall(city).toFixed(1)}</span>
             <span class="pill">Stability ${city.stability}</span>
             <span class="pill">Health ${city.healthcare}</span>
@@ -894,10 +923,26 @@
       const autoTeam = owned.slice(0, 3).map(i => cities[i]);
       autoSelectFirstOwned();
       return autoTeam;
+          </div>
+        </div>
+      `).join('');
+    }
+
+    renderCities();
+
+    function pickUserTeam() {
+      const selected = Array.from(document.querySelectorAll('.city-pick:checked')).map(cb => Number(cb.dataset.index));
+      if (selected.length !== 3) {
+        alert('Please pick exactly three owned cities for your team.');
+        alert('Please pick exactly three cities for your team.');
+        return null;
+      }
+      return selected.map(i => cities[i]);
     }
 
     function pickBotTeam(userIndexes) {
       const remaining = cities.filter((_, idx) => !userIndexes.includes(idx));
+      // Shuffle remaining and take first three
       for (let i = remaining.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [remaining[i], remaining[j]] = [remaining[j], remaining[i]];
@@ -925,6 +970,15 @@
       const changeWin = 18;
       const changeLose = -12;
       const changeDraw = 5;
+    function teamScore(team) {
+      // Team score is the sum of each city's average category score with a tiny random factor
+      return team.reduce((sum, city) => sum + cityOverall(city), 0) + Math.random() * 5;
+    }
+
+    function adjustRatings(userTeam, botTeam, outcome) {
+      const changeWin = 15;
+      const changeLose = -12;
+      const changeDraw = 3;
       const summary = [];
 
       if (outcome === 'win') {
@@ -1081,6 +1135,26 @@
         <div class="battle-summary">
           <p><strong>Rounds:</strong></p>
           <ul>${rounds.map(r => `<li>${r}</li>`).join('')}</ul>
+      const botScore = teamScore(botTeam);
+      let outcome = 'draw';
+      let winnerText = 'Draw! Both teams were evenly matched.';
+
+      if (userScore > botScore + 0.5) {
+        outcome = 'win';
+        winnerText = 'You win! Your draft delivered higher liveability.';
+      } else if (botScore > userScore + 0.5) {
+        outcome = 'lose';
+        winnerText = 'Bot wins! Try picking different strengths next time.';
+      }
+
+      // Adjust ratings based on outcome
+      const ratingChanges = adjustRatings(userTeam, botTeam, outcome);
+      renderCities();
+
+      document.getElementById('battleResult').innerHTML = `
+        <p><strong>${winnerText}</strong></p>
+        <p>Your team score: ${userScore.toFixed(1)} | Bot team score: ${botScore.toFixed(1)}</p>
+        <div class="battle-summary">
           <p><strong>Rating changes:</strong></p>
           <ul>${ratingChanges.map(change => `<li>${change}</li>`).join('')}</ul>
         </div>
