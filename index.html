@@ -660,15 +660,18 @@
     function rollBall() {
       if (!playingXi.length) {
         pushLog('No players in XI. Add at least one player.');
-        return;
+        updateScoreboard();
+        return false;
       }
       if (!chores.length) {
         pushLog('No chores on the board. Add at least one chore shot.');
-        return;
+        updateScoreboard();
+        return false;
       }
       if (wickets >= playingXi.length) {
         pushLog('All out! Reset the innings.');
-        return;
+        updateScoreboard();
+        return false;
       }
 
       const batterName = playingXi[batterIndex % playingXi.length];
@@ -699,12 +702,14 @@
       }
 
       updateScoreboard();
+      return true;
     }
 
     function simulateOver() {
       for (let i = 0; i < 6; i += 1) {
+        const played = rollBall();
+        if (!played) break;
         if (wickets >= playingXi.length) break;
-        rollBall();
       }
     }
 
