@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Geography Liveability & Environment App</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chore Cricket Club</title>
   <style>
     :root {
-      --primary: #2b7a78;
-      --secondary: #def2f1;
-      --accent: #fe8a71;
-      --text: #17252a;
-      --card-bg: #ffffff;
-      --muted: #52616b;
+      --bg: #0b1724;
+      --panel: #101c2b;
+      --accent: #ffb703;
+      --accent-2: #6fffe9;
+      --text: #f1f5f9;
+      --muted: #9fb3c8;
+      --card: #162538;
     }
 
     * {
@@ -19,66 +20,86 @@
     }
 
     body {
-      font-family: 'Segoe UI', Arial, sans-serif;
       margin: 0;
-      padding: 0;
-      background: linear-gradient(180deg, #f8f9fb 0%, #e7f2f3 100%);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at 25% 20%, rgba(111, 255, 233, 0.08), transparent 35%),
+        radial-gradient(circle at 80% 0%, rgba(255, 183, 3, 0.08), transparent 30%),
+        var(--bg);
       color: var(--text);
       line-height: 1.6;
     }
 
     header {
-      background: var(--primary);
-      color: #fff;
-      padding: 1.2rem;
       position: sticky;
       top: 0;
-      z-index: 1000;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      z-index: 10;
+      background: rgba(11, 23, 36, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      padding: 1rem 1.25rem;
     }
 
-    h1 {
-      margin: 0 0 0.5rem 0;
-      font-size: 1.6rem;
+    .bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
     nav {
       display: flex;
-      gap: 0.75rem;
+      gap: 0.8rem;
       flex-wrap: wrap;
     }
 
     nav a {
-      color: #fff;
+      color: var(--text);
       text-decoration: none;
-      background: rgba(255, 255, 255, 0.15);
-      padding: 0.5rem 0.9rem;
+      padding: 0.45rem 0.75rem;
       border-radius: 999px;
-      transition: background 0.2s ease;
+      background: rgba(255, 255, 255, 0.05);
+      font-size: 0.95rem;
+      transition: transform 0.15s ease, background 0.15s ease;
     }
 
-    nav a:hover, nav a:focus {
-      background: rgba(255, 255, 255, 0.3);
+    nav a:hover,
+    nav a:focus {
+      background: rgba(255, 255, 255, 0.12);
+      transform: translateY(-2px);
     }
 
     main {
-      max-width: 1100px;
-      margin: 1.5rem auto 3rem auto;
-      padding: 0 1rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
     }
 
-    section {
-      background: var(--card-bg);
-      margin-bottom: 1.5rem;
-      padding: 1.5rem;
-      border-radius: 14px;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
-      border: 1px solid #e2e8f0;
+    h1 {
+      margin: 0;
+      font-size: 1.5rem;
     }
 
     h2 {
-      margin-top: 0;
-      color: var(--primary);
+      margin: 0 0 0.6rem 0;
+      color: var(--accent);
+      letter-spacing: 0.2px;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 1.25rem;
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
     }
 
     .grid {
@@ -87,1068 +108,678 @@
     }
 
     .two-col {
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     }
 
-    label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 0.3rem;
-      color: var(--muted);
-    }
-
-    input[type="number"], select {
-      width: 100%;
-      padding: 0.6rem;
-      border: 1px solid #cfd8dc;
-      border-radius: 8px;
-      font-size: 1rem;
-    }
-
-    button {
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      padding: 0.75rem 1.2rem;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: 700;
-      letter-spacing: 0.4px;
-      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s ease;
-    }
-
-    button:hover, button:focus {
-      transform: translateY(-1px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-      background: #236c65;
-    }
-
-    .muted {
-      color: var(--muted);
-    }
-
-    .card-list {
-      display: grid;
+    .three-col {
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1rem;
     }
 
-    .info-card {
-      background: #f8fbff;
-      border: 1px solid #dfe9f3;
-      border-radius: 12px;
-      padding: 1rem;
-    }
-
-    .result-box, .quiz-box, .battle-box {
-      background: #f8fbff;
-      border: 1px solid #dce5ec;
-      padding: 1rem;
-      border-radius: 12px;
-      margin-top: 1rem;
-    }
-
-    .rating-label {
-      display: inline-block;
-      padding: 0.25rem 0.7rem;
-      border-radius: 999px;
-      font-weight: 700;
-      color: #fff;
-    }
-
-    .label-high { background: #2ecc71; }
-    .label-liveable { background: #3498db; }
-    .label-challenging { background: #f39c12; }
-    .label-hard { background: #e74c3c; }
-
-    .city-list {
+    .hero {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1rem;
-    }
-
-    .city-card {
-      border: 1px solid #e1e7ed;
-      border-radius: 12px;
-      padding: 0.9rem;
-      background: #fff;
-    }
-
-    .city-card h4 {
-      margin: 0 0 0.4rem 0;
-    }
-
-    .pill {
-      display: inline-block;
-      padding: 0.2rem 0.6rem;
-      border-radius: 999px;
-      background: #eef7f6;
-      margin-right: 0.25rem;
-      font-size: 0.85rem;
-      color: var(--primary);
-    }
-
-    .score {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--primary);
-    }
-
-    .battle-summary {
-      margin-top: 0.5rem;
-      padding-top: 0.5rem;
-      border-top: 1px solid #e2e8f0;
-    }
-
-    .flex {
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
       align-items: center;
     }
 
-    .small {
-      font-size: 0.95rem;
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.3rem 0.75rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--accent-2);
+      font-weight: 700;
+      font-size: 0.9rem;
     }
 
-    .meta-list, .rank-list {
+    .cta {
+      background: linear-gradient(120deg, var(--accent), #ff7c02);
+      color: #0b1724;
+      border: none;
+      border-radius: 12px;
+      padding: 0.85rem 1.2rem;
+      font-weight: 800;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 12px 30px rgba(255, 183, 3, 0.35);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .cta:hover,
+    .cta:focus {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 40px rgba(255, 183, 3, 0.5);
+    }
+
+    .stat-card {
+      display: grid;
+      gap: 0.35rem;
+    }
+
+    .stat-value {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--accent-2);
+    }
+
+    .label {
+      display: inline-block;
+      padding: 0.2rem 0.55rem;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      font-size: 0.85rem;
+      color: var(--accent);
+    }
+
+    .list {
       list-style: none;
-      padding-left: 1rem;
-      margin: 0.5rem 0;
-      color: var(--muted);
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 0.8rem;
     }
 
-    .meta-list li, .rank-list li {
-      margin: 0.2rem 0;
+    .player-card,
+    .chore-card {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.4rem 0.75rem;
+      background: var(--panel);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 0.75rem 0.9rem;
+    }
+
+    .player-card strong,
+    .chore-card strong {
+      font-size: 1.05rem;
+    }
+
+    .button {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      padding: 0.45rem 0.7rem;
+      cursor: pointer;
+      font-weight: 700;
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+
+    .button:hover,
+    .button:focus {
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, 0.16);
+    }
+
+    .danger {
+      color: #ff7b7b;
+      border-color: rgba(255, 123, 123, 0.4);
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 0.65rem 0.75rem;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      color: var(--text);
+      font-size: 1rem;
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .scoreboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 0.75rem;
+    }
+
+    .score-box {
+      background: var(--panel);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 0.9rem;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .score-num {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--accent);
+    }
+
+    .log {
+      background: #0b1522;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      padding: 0.75rem;
+      min-height: 160px;
+      max-height: 280px;
+      overflow-y: auto;
     }
 
     .tag {
       display: inline-block;
-      padding: 0.2rem 0.55rem;
-      background: #e8f5e9;
-      color: #2e7d32;
-      border-radius: 10px;
-      font-size: 0.85rem;
-      margin-right: 0.25rem;
+      padding: 0.18rem 0.55rem;
+      background: rgba(111, 255, 233, 0.1);
+      border: 1px solid rgba(111, 255, 233, 0.25);
+      border-radius: 999px;
+      font-size: 0.82rem;
+      color: var(--accent-2);
+    }
+
+    .row {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    @media (max-width: 600px) {
+      nav {
+        justify-content: center;
+      }
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>Geography Liveability & Environment App</h1>
-    <nav>
-      <a href="#howto">How to Play</a>
-      <a href="#calculator">Calculator</a>
-      <a href="#environment">Environment</a>
-      <a href="#quiz">Quiz</a>
-      <a href="#battle">City Battle</a>
-    </nav>
+    <div class="bar">
+      <div>
+        <div class="pill">Chore + Cricket = Household Hat-trick</div>
+        <h1>Chore Cricket Club</h1>
+      </div>
+      <nav aria-label="Page navigation">
+        <a href="#lineup">Lineup</a>
+        <a href="#chores">Chore Board</a>
+        <a href="#match">Match Center</a>
+        <a href="#tips">Tips</a>
+      </nav>
+    </div>
   </header>
 
   <main>
-    <section id="howto">
-      <h2>How to Play &amp; Explore</h2>
+    <section class="card hero">
+      <div>
+        <h2>Captain a household cricket league</h2>
+        <p class="muted">Pick players, tie their strengths to real chores, and watch the scoreboard tick as every sweep, wash, and wipe becomes a boundary. Perfect for families, roommates, or squads who love cricket energy with tidier rooms.</p>
+        <div class="row" style="margin-top: 0.5rem;">
+          <button class="cta" id="quickStart">Start a chore over</button>
+          <span class="muted">Simulate overs to convert chores into runs.</span>
+        </div>
+      </div>
       <div class="grid two-col">
-        <div class="info-card">
-          <h3>Step 1: Test a City</h3>
-          <p>Use the calculator to enter scores for stability, healthcare, culture &amp; environment, education, and infrastructure (0–100).</p>
-          <ul>
-            <li>Select a sample city to auto-fill numbers.</li>
-            <li>Press <strong>Calculate Liveability</strong> to see the rating label and explanation.</li>
-            <li>Compare your city’s score to the sample pick.</li>
-          </ul>
+        <div class="card stat-card">
+          <span class="label">House Championship</span>
+          <div class="stat-value" id="titleStat">0/0</div>
+          <p class="muted">Track the live score: runs, wickets, and overs completed for your current chore innings.</p>
         </div>
-        <div class="info-card">
-          <h3>Step 2: Learn &amp; Quiz</h3>
-          <p>Open the Environment section for quick geography notes. Then hit <strong>Start Liveability &amp; Environment Quiz</strong> to check what you learned.</p>
-          <ul>
-            <li>Each question has four choices—pick one to see instant feedback.</li>
-            <li>Finish the set to view your final score and title.</li>
-          </ul>
-        </div>
-        <div class="info-card">
-          <h3>Step 3: City Battle</h3>
-          <p>Draft three cities to face a bot. Every battle sums each city’s average score and adds a tiny random twist.</p>
-          <ul>
-            <li>Tick exactly three cities, then press <strong>Start Battle</strong>.</li>
-            <li>The bot drafts three others; highest team score wins.</li>
-            <li>Ratings shift up or down after every match—try different combos to climb.</li>
-          </ul>
-        </div>
-        <div class="info-card">
-          <h3>Navigation Tips</h3>
-          <p>Use the top buttons to jump between sections. You can recalc, retake the quiz, or rebattle as many times as you like.</p>
-          <ul>
-            <li>Hover buttons to highlight them.</li>
-            <li>Reload the page to reset ratings.</li>
-            <li>Best viewed on modern browsers.</li>
-          </ul>
+        <div class="card stat-card">
+          <span class="label">Captain's Goal</span>
+          <div class="stat-value" id="goalStat">Finish 3 chores + win the over</div>
+          <p class="muted">Set small targets. When chores finish early, throw in a bonus over for bragging rights.</p>
         </div>
       </div>
     </section>
 
-    <section id="calculator">
-      <h2>Liveability Calculator (EIU-style)</h2>
-      <p class="muted">Enter scores for each category (0-100). The app averages them to estimate a liveability score.</p>
-      <div class="grid two-col">
+    <section id="lineup" class="card">
+      <div class="row" style="justify-content: space-between; align-items: flex-start;">
         <div>
-          <label for="stability">Stability</label>
-          <input type="number" id="stability" min="0" max="100" value="70" />
-          <label for="healthcare">Healthcare</label>
-          <input type="number" id="healthcare" min="0" max="100" value="72" />
-          <label for="cultureEnv">Culture &amp; Environment</label>
-          <input type="number" id="cultureEnv" min="0" max="100" value="75" />
+          <h2>Lineup builder</h2>
+          <p class="muted">Draft a playing XI from your household. Add the chores they excel at and shuffle the batting order.</p>
+        </div>
+        <div class="label" id="lineupCount">0 in playing XI</div>
+      </div>
+      <div class="grid two-col" style="margin-top: 1rem;">
+        <div>
+          <h3 style="margin: 0 0 0.5rem 0;">Squad list</h3>
+          <div class="list" id="squadList"></div>
         </div>
         <div>
-          <label for="education">Education</label>
-          <input type="number" id="education" min="0" max="100" value="74" />
-          <label for="infrastructure">Infrastructure</label>
-          <input type="number" id="infrastructure" min="0" max="100" value="73" />
-          <label for="sampleCity">Sample Cities</label>
-          <select id="sampleCity"></select>
+          <h3 style="margin: 0 0 0.5rem 0;">Playing XI</h3>
+          <div class="list" id="xiList"></div>
+          <div class="row" style="margin-top: 0.7rem;">
+            <button class="button" id="clearXi">Clear XI</button>
+            <span class="muted">Tip: add at least 3 players for balanced overs.</span>
+          </div>
         </div>
       </div>
-      <div class="flex" style="margin-top: 1rem;">
-        <button id="calculateBtn">Calculate Liveability</button>
-        <span class="muted small">Tip: pick a sample city to auto-fill and compare.</span>
-      </div>
-      <div class="result-box" id="calcResult"></div>
-    </section>
-
-    <section id="environment">
-      <h2>Environment &amp; Liveability</h2>
-      <p class="muted">Better environments often make cities calmer, healthier, and more enjoyable to live in. These cards use simple Year 7 language.</p>
-      <div class="card-list">
-        <div class="info-card">
-          <h3>Air Quality</h3>
-          <p>Clean air means fewer breathing problems and more outdoor play. Reducing traffic smoke and factory fumes keeps skies clearer.</p>
-          <ul>
-            <li>Track pollution index.</li>
-            <li>Encourage cycling and walking.</li>
-            <li>Plant street trees.</li>
-          </ul>
+      <div class="grid two-col" style="margin-top: 1rem;">
+        <div class="card" style="background: #0f1a2a;">
+          <h4 style="margin: 0 0 0.4rem 0;">Add a new household player</h4>
+          <label class="muted" for="playerName">Name</label>
+          <input id="playerName" placeholder="Pat Sweep" />
+          <label class="muted" for="playerRole">Role</label>
+          <select id="playerRole">
+            <option>Opener</option>
+            <option>Anchor</option>
+            <option>All-rounder</option>
+            <option>Finisher</option>
+          </select>
+          <label class="muted" for="playerChore">Signature chore</label>
+          <input id="playerChore" placeholder="Windows & mirrors" />
+          <label class="muted" for="playerSkill">Skill (1-100)</label>
+          <input id="playerSkill" type="number" min="1" max="100" value="72" />
+          <div class="row" style="margin-top: 0.6rem;">
+            <button class="cta" id="addPlayer">Add to squad</button>
+            <span class="muted">Skill = success chance when their chore shows up.</span>
+          </div>
         </div>
-        <div class="info-card">
-          <h3>Green Space</h3>
-          <p>Parks and gardens cool a city and give people places to relax. A city with many trees usually feels calmer and safer.</p>
-          <ul>
-            <li>Count parks per neighbourhood.</li>
-            <li>Shade from trees lowers summer heat.</li>
-            <li>Birds and insects thrive.</li>
-          </ul>
-        </div>
-        <div class="info-card">
-          <h3>Water Quality</h3>
-          <p>Healthy rivers and clean drinking water stop sickness. Wetlands can filter dirty water and reduce floods.</p>
-          <ul>
-            <li>Check tap water safety.</li>
-            <li>Protect river banks.</li>
-            <li>Keep plastics out of drains.</li>
-          </ul>
-        </div>
-        <div class="info-card">
-          <h3>Climate &amp; Weather</h3>
-          <p>Milder climates feel comfortable. Extreme heat or storms can lower liveability, so cities plan shade, shelters, and cooling centres.</p>
-          <ul>
-            <li>Track heatwave days.</li>
-            <li>Have storm-safe buildings.</li>
-            <li>Use light roofs to reflect heat.</li>
-          </ul>
-        </div>
-        <div class="info-card">
-          <h3>Transport &amp; Pollution</h3>
-          <p>Buses, trains, and bike lanes cut car trips, which lowers air pollution. Good transport also helps people reach jobs and schools.</p>
-          <ul>
-            <li>Measure public transport access.</li>
-            <li>Limit traffic jams near schools.</li>
-            <li>Support electric vehicles.</li>
-          </ul>
-        </div>
-        <div class="info-card">
-          <h3>Sustainable Cities</h3>
-          <p>Saving energy and recycling keeps resources for the future. Efficient buildings and clean power make cities both greener and more liveable.</p>
-          <ul>
-            <li>Use solar where possible.</li>
-            <li>Recycle and reuse materials.</li>
-            <li>Protect local wildlife habitats.</li>
-          </ul>
+        <div class="card" style="background: #0f1a2a;">
+          <h4 style="margin: 0 0 0.4rem 0;">Captain's strategy</h4>
+          <p class="muted" id="strategyNote">Stack cleaners with strong sweep skills for the powerplay (first over).</p>
         </div>
       </div>
     </section>
 
-    <section id="quiz">
-      <h2>Liveability &amp; Environment Quiz</h2>
-      <p class="muted">Test your knowledge about EIU-style categories, environment, and what makes cities liveable.</p>
-      <button id="startQuiz">Start Liveability &amp; Environment Quiz</button>
-      <div class="quiz-box" id="quizBox" aria-live="polite"></div>
+    <section id="chores" class="card">
+      <div class="row" style="justify-content: space-between; align-items: flex-start;">
+        <div>
+          <h2>Chore board</h2>
+          <p class="muted">Each chore swings like a cricket shot. Difficulty affects wicket risk; run reward decides how big the boundary feels.</p>
+        </div>
+        <div class="label" id="choreCount">0 chore shots</div>
+      </div>
+      <div class="grid two-col" style="margin-top: 1rem;">
+        <div>
+          <h3 style="margin: 0 0 0.5rem 0;">Chore shots</h3>
+          <div class="list" id="choreList"></div>
+        </div>
+        <div class="card" style="background: #0f1a2a;">
+          <h4 style="margin: 0 0 0.4rem 0;">Add a custom chore</h4>
+          <label class="muted" for="choreName">Chore name</label>
+          <input id="choreName" placeholder="Dusting cover drive" />
+          <label class="muted" for="choreEffort">Effort (1 easy - 6 intense)</label>
+          <input id="choreEffort" type="number" min="1" max="6" value="3" />
+          <label class="muted" for="choreRuns">Run reward (1-6)</label>
+          <input id="choreRuns" type="number" min="1" max="6" value="4" />
+          <label class="muted" for="choreNote">Notes</label>
+          <textarea id="choreNote" placeholder="Add laundry + folding bonus"></textarea>
+          <div class="row" style="margin-top: 0.6rem;">
+            <button class="cta" id="addChore">Add chore shot</button>
+            <span class="muted">Higher effort raises wicket risk.</span>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <section id="battle">
-      <h2>City Battle</h2>
-      <p class="muted">Draft three cities, battle a bot, earn tokens, and climb the liveability ladder.</p>
-      <div class="flex" style="gap: 1rem; align-items: center; flex-wrap: wrap;">
-        <div class="pill">Tokens: <span id="tokenCount">0</span></div>
-        <div class="pill">Rank: <span id="rankTitle">Rookie Planner</span></div>
-        <div class="pill">Career wins: <span id="winCount">0</span></div>
-      </div>
-      <p class="small muted">Start with one proud hometown. Win battles to gain tokens, buy new cities, and upgrade your squad to rule the league.</p>
-      <div class="city-list" id="cityList"></div>
-      <div class="flex" style="margin-top: 1rem; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
-        <button id="battleBtn">Start Battle</button>
-        <span class="muted small">Pick exactly three owned cities. The bot drafts from what you leave behind.</span>
-      </div>
-      <div class="battle-box" id="battleResult"></div>
-      <div class="battle-box" aria-live="polite" style="margin-top: 1rem;">
-        <h3 style="margin-top: 0;">Upgrades &amp; Market</h3>
-        <div class="grid two-col">
-          <div>
-            <label for="upgradeSelect">Upgrade an owned city (+2 to all categories, max 100) — Cost: 20 tokens</label>
-            <select id="upgradeSelect"></select>
-            <button id="upgradeBtn" style="margin-top: 0.5rem;">Upgrade City</button>
-          </div>
-          <div>
-            <p class="muted small">Locked cities show a price tag. Buy them with tokens from victories to expand your draft pool.</p>
-            <p class="muted small">Tip: Higher liveability stats usually mean better battle scores, but surprise upsets can still happen.</p>
-          </div>
+    <section id="match" class="card">
+      <div class="row" style="justify-content: space-between; align-items: center; flex-wrap: wrap;">
+        <div>
+          <h2>Match center</h2>
+          <p class="muted">Simulate overs as you clear chores. The batting order follows your playing XI.</p>
+        </div>
+        <div class="row">
+          <button class="button" id="simulateOver">Simulate over</button>
+          <button class="button" id="simulateBall">Bowl one ball</button>
+          <button class="button danger" id="resetMatch">Reset innings</button>
         </div>
       </div>
+      <div class="scoreboard" style="margin-top: 1rem;">
+        <div class="score-box">
+          <div class="muted">Runs / Wickets</div>
+          <div class="score-num" id="scoreDisplay">0 / 0</div>
+        </div>
+        <div class="score-box">
+          <div class="muted">Overs</div>
+          <div class="score-num" id="overDisplay">0.0</div>
+        </div>
+        <div class="score-box">
+          <div class="muted">Current batter</div>
+          <div class="score-num" id="batterDisplay">—</div>
+        </div>
+        <div class="score-box">
+          <div class="muted">Momentum</div>
+          <div class="score-num" id="momentumDisplay">Calm</div>
+        </div>
+      </div>
+      <div class="grid two-col" style="margin-top: 1rem;">
+        <div>
+          <h3 style="margin: 0 0 0.4rem 0;">Commentary</h3>
+          <div class="log" id="logBox"></div>
+        </div>
+        <div>
+          <h3 style="margin: 0 0 0.4rem 0;">Momentum gauge</h3>
+          <p class="muted">Low effort chores cool things down; stacked tough tasks raise wicket risk. Rotate batters with matching skills.</p>
+          <div class="list" id="momentumList"></div>
+        </div>
+      </div>
+    </section>
 
-      <div class="battle-box" style="margin-top: 1rem;">
-        <h3 style="margin-top: 0;">Rank Ladder &amp; Championship</h3>
-        <p class="muted small">Climb ranks to unlock tougher bots and tournaments that shower you with tokens.</p>
-        <ul class="rank-list" id="rankScale"></ul>
-        <div class="flex" style="gap: 0.5rem; margin-top: 0.75rem; align-items: center; flex-wrap: wrap;">
-          <button id="tournamentBtn">Enter Championship Tournament</button>
-          <span class="muted small">Unlocked at Continental Captain (250+ rank points). You must field your best 3-city team.</span>
+    <section id="tips" class="card">
+      <h2>Captain's playbook</h2>
+      <div class="grid three-col" style="margin-top: 0.8rem;">
+        <div class="card" style="background: #0f1a2a;">
+          <strong>Powerplay = warm-up chores</strong>
+          <p class="muted">Open with easy wins (beds, cushions, dishes) to build runs fast and avoid early wickets.</p>
         </div>
-        <div class="result-box" id="tourneyResult" style="margin-top: 0.75rem;"></div>
-      </div>
-
-      <div class="battle-box" style="margin-top: 1rem;">
-        <h3 style="margin-top: 0;">Meta Watch &amp; Legends</h3>
-        <div class="grid two-col">
-          <div>
-            <p class="muted small">Cities trending in top ranks (highest ratings update after each match):</p>
-            <ul class="meta-list" id="metaList"></ul>
-          </div>
-          <div>
-            <p class="muted small">Best battlers and their average match scores:</p>
-            <ul class="meta-list" id="playerBoard"></ul>
-          </div>
+        <div class="card" style="background: #0f1a2a;">
+          <strong>Middle overs = combos</strong>
+          <p class="muted">Pair related chores: vacuum + mop, laundry wash + hang. Keep the batter whose specialty matches the combo.</p>
+        </div>
+        <div class="card" style="background: #0f1a2a;">
+          <strong>Death overs = high effort</strong>
+          <p class="muted">Finish with tough tasks (fridge clean, bathroom scrub). Save your highest skill finisher to avoid collapse.</p>
         </div>
       </div>
-      <p class="muted">Draft three cities, battle a bot, and watch ratings fluctuate after every match.</p>
-      <div class="city-list" id="cityList"></div>
-      <div class="flex" style="margin-top: 1rem;">
-        <button id="battleBtn">Start Battle</button>
-        <span class="muted small">Pick exactly three cities for your team. The bot drafts from the rest.</span>
-      </div>
-      <div class="battle-box" id="battleResult"></div>
     </section>
   </main>
 
   <script>
-    // --- Data for sample cities and default categories ---
-    const sampleCities = [
-      { name: "Coastville", stability: 85, healthcare: 90, cultureEnv: 88, education: 80, infrastructure: 82 },
-      { name: "Riverport", stability: 75, healthcare: 70, cultureEnv: 72, education: 78, infrastructure: 76 },
-      { name: "Desert City", stability: 60, healthcare: 55, cultureEnv: 50, education: 58, infrastructure: 62 },
-      { name: "Mountain Ridge", stability: 82, healthcare: 78, cultureEnv: 85, education: 74, infrastructure: 79 },
-      { name: "Forest Glen", stability: 68, healthcare: 71, cultureEnv: 77, education: 69, infrastructure: 70 }
+    const squad = [
+      { name: 'Sweep Singh', role: 'Opener', specialty: 'Floor sweeping', skill: 82 },
+      { name: 'Mopika Rao', role: 'All-rounder', specialty: 'Mopping & drying', skill: 76 },
+      { name: 'Dusty Patel', role: 'Anchor', specialty: 'Shelves & fans', skill: 74 },
+      { name: 'Laundry Latha', role: 'Finisher', specialty: 'Laundry & folding', skill: 80 },
+      { name: 'Bristle Ben', role: 'All-rounder', specialty: 'Bathroom scrub', skill: 68 },
+      { name: 'Tidy Tan', role: 'Opener', specialty: 'Decluttering hotspots', skill: 71 },
+      { name: 'Wipe Willis', role: 'Finisher', specialty: 'Windows & mirrors', skill: 79 },
+      { name: 'Chef Chandra', role: 'Anchor', specialty: 'Kitchen wipe-down', skill: 77 }
     ];
 
-    // Populate sample city dropdown on load
-    const sampleSelect = document.getElementById('sampleCity');
-    sampleCities.forEach((city, index) => {
-      const option = document.createElement('option');
-      option.value = index;
-      option.textContent = city.name;
-      sampleSelect.appendChild(option);
-    });
+    const chores = [
+      { name: 'Sweeping cover drive', effort: 2, runs: 3, note: 'Quick sweeps across hall & porch.' },
+      { name: 'Laundry lofted shot', effort: 3, runs: 4, note: 'Wash + hang + fold to deep midwicket.' },
+      { name: 'Bathroom yorker', effort: 5, runs: 5, note: 'Tiles, sink, and drain blitz.' },
+      { name: 'Kitchen cut shot', effort: 3, runs: 4, note: 'Counters, stove, and wipe the backsplash.' },
+      { name: 'Window scoop', effort: 4, runs: 6, note: 'Windows, mirrors, and frames sparkle.' },
+      { name: 'Declutter sweep', effort: 2, runs: 2, note: 'Pick-up dash for books, toys, chargers.' }
+    ];
 
-    // Auto-fill form when a sample city is chosen
-    sampleSelect.addEventListener('change', (e) => {
-      const city = sampleCities[e.target.value];
-      if (!city) return;
-      document.getElementById('stability').value = city.stability;
-      document.getElementById('healthcare').value = city.healthcare;
-      document.getElementById('cultureEnv').value = city.cultureEnv;
-      document.getElementById('education').value = city.education;
-      document.getElementById('infrastructure').value = city.infrastructure;
-      calculateLiveability();
-    });
+    let playingXi = ['Sweep Singh', 'Mopika Rao', 'Dusty Patel', 'Laundry Latha'];
+    let commentary = [];
+    let balls = 0;
+    let runs = 0;
+    let wickets = 0;
+    let batterIndex = 0;
+    let momentum = 0; // negative calm, positive chaos
 
-    // Helper to determine rating label based on score
-    function getRatingLabel(score) {
-      if (score >= 80) return { text: 'Highly liveable', className: 'label-high' };
-      if (score >= 60) return { text: 'Liveable', className: 'label-liveable' };
-      if (score >= 40) return { text: 'Challenging', className: 'label-challenging' };
-      return { text: 'Very difficult to live in', className: 'label-hard' };
-    }
+    const squadList = document.getElementById('squadList');
+    const xiList = document.getElementById('xiList');
+    const lineupCount = document.getElementById('lineupCount');
+    const strategyNote = document.getElementById('strategyNote');
+    const choreList = document.getElementById('choreList');
+    const choreCount = document.getElementById('choreCount');
+    const logBox = document.getElementById('logBox');
+    const scoreDisplay = document.getElementById('scoreDisplay');
+    const overDisplay = document.getElementById('overDisplay');
+    const batterDisplay = document.getElementById('batterDisplay');
+    const momentumDisplay = document.getElementById('momentumDisplay');
+    const momentumList = document.getElementById('momentumList');
+    const titleStat = document.getElementById('titleStat');
 
-    // Calculate average liveability score from five categories
-    function calculateLiveability() {
-      const fields = ['stability', 'healthcare', 'cultureEnv', 'education', 'infrastructure'];
-      const values = [];
-
-      for (const field of fields) {
-        const val = Number(document.getElementById(field).value);
-        if (Number.isNaN(val) || val < 0 || val > 100) {
-          document.getElementById('calcResult').innerHTML = '<p>Please enter numbers between 0 and 100 for all categories.</p>';
-          return;
-        }
-        values.push(val);
+    function updateStrategyNote() {
+      const topSkill = [...squad]
+        .filter(p => playingXi.includes(p.name))
+        .sort((a, b) => b.skill - a.skill)[0];
+      if (!topSkill) {
+        strategyNote.textContent = 'Add players to see personalized advice.';
+        return;
       }
-
-      // Average score across all five categories
-      const totalScore = values.reduce((sum, v) => sum + v, 0) / values.length;
-      const label = getRatingLabel(totalScore);
-
-      // Explanation to help students interpret the score
-      let explanation = '';
-      if (totalScore >= 80) {
-        explanation = 'This city scores well across most categories. Residents likely feel safe, have strong services, and enjoy a clean environment.';
-      } else if (totalScore >= 60) {
-        explanation = 'The city is generally comfortable. It may have a few weak spots, but daily life is mostly smooth.';
-      } else if (totalScore >= 40) {
-        explanation = 'Life here might feel unpredictable. Improving transport, healthcare, or safety could raise the score.';
-      } else {
-        explanation = 'Many services are limited. Investments in health, safety, and infrastructure are needed to lift liveability.';
-      }
-
-      // Compare to selected sample city
-      const selected = sampleCities[sampleSelect.value] || sampleCities[0];
-      const sampleScore = (
-        selected.stability + selected.healthcare + selected.cultureEnv + selected.education + selected.infrastructure
-      ) / 5;
-      const difference = (totalScore - sampleScore).toFixed(1);
-      const comparison = difference >= 0
-        ? `Your city is more liveable than ${selected.name} by ${difference} points.`
-        : `Your city is less liveable than ${selected.name} by ${Math.abs(difference)} points.`;
-
-      document.getElementById('calcResult').innerHTML = `
-        <div class="flex">
-          <div class="rating-label ${label.className}">${label.text}</div>
-          <div class="score">Total score: ${totalScore.toFixed(1)} / 100</div>
-        </div>
-        <p>${explanation}</p>
-        <p>Your city score: ${totalScore.toFixed(1)} | ${selected.name} score: ${sampleScore.toFixed(1)}</p>
-        <p>${comparison}</p>
-      `;
+      const vibe = topSkill.skill > 80 ? 'aggressive powerplay' : topSkill.skill > 70 ? 'balanced middle overs' : 'steady, wicket-safe singles';
+      strategyNote.textContent = `${topSkill.name} can anchor a ${vibe}. Pair them with chores that match ${topSkill.specialty.toLowerCase()}.`;
     }
 
-    document.getElementById('calculateBtn').addEventListener('click', calculateLiveability);
-
-    // --- Quiz logic ---
-    const quizQuestions = [
-      {
-        question: 'What does liveability measure?',
-        options: [
-          'How rich a country is',
-          'How safe and comfortable life is in a city',
-          'How tall buildings are',
-          'How many tourist spots a city has'
-        ],
-        answer: 1,
-        explanation: 'Liveability checks daily comfort: safety, services, and environment.'
-      },
-      {
-        question: 'Which factor best improves air quality?',
-        options: [
-          'More diesel cars',
-          'Planting trees and reducing traffic smoke',
-          'Building taller skyscrapers',
-          'Adding more billboards'
-        ],
-        answer: 1,
-        explanation: 'Trees absorb pollution and fewer car fumes mean cleaner air.'
-      },
-      {
-        question: 'Which category fits public hospitals?',
-        options: ['Stability', 'Healthcare', 'Education', 'Infrastructure'],
-        answer: 1,
-        explanation: 'Hospitals support the Healthcare category in EIU-style rankings.'
-      },
-      {
-        question: 'Liveability vs wealth: which is true?',
-        options: [
-          'Wealth always guarantees high liveability',
-          'Wealth is the only liveability measure',
-          'Liveability focuses on quality of life, not just money',
-          'Liveability ignores environment'
-        ],
-        answer: 2,
-        explanation: 'Liveability looks at safety, services, and environment, not only income.'
-      },
-      {
-        question: 'Air pollution belongs to which category?',
-        options: ['Stability', 'Healthcare', 'Culture & Environment', 'Infrastructure'],
-        answer: 2,
-        explanation: 'Environment and culture scores include air and green space quality.'
-      },
-      {
-        question: 'Which action makes a city more sustainable?',
-        options: ['Wasting electricity', 'Recycling and saving energy', 'Leaving parks empty', 'Removing bike lanes'],
-        answer: 1,
-        explanation: 'Saving energy and recycling protect resources for the future.'
-      },
-      {
-        question: 'What helps people reach jobs and school more easily?',
-        options: ['Crowded roads', 'Few buses', 'Reliable public transport', 'Closing stations'],
-        answer: 2,
-        explanation: 'Good transport raises convenience and cuts pollution.'
-      },
-      {
-        question: 'Which city feature cools hot streets?',
-        options: ['Metal roofs', 'Concrete-only parks', 'Shade trees and green roofs', 'Removing gardens'],
-        answer: 2,
-        explanation: 'Trees and plants provide shade and lower temperatures.'
-      }
-    ];
-
-    let currentQuestion = 0;
-    let score = 0;
-
-    const quizBox = document.getElementById('quizBox');
-    function renderQuestion() {
-      const q = quizQuestions[currentQuestion];
-      quizBox.innerHTML = `
-        <p><strong>Question ${currentQuestion + 1} of ${quizQuestions.length}:</strong> ${q.question}</p>
-        <div class="grid" style="gap: 0.5rem;">
-          ${q.options.map((opt, idx) => `
-            <button class="quiz-option" data-index="${idx}">${opt}</button>
-          `).join('')}
-        </div>
-      `;
-      document.querySelectorAll('.quiz-option').forEach(btn => {
-        btn.addEventListener('click', () => handleAnswer(Number(btn.dataset.index)));
-      });
-    }
-
-    function handleAnswer(selectedIndex) {
-      const q = quizQuestions[currentQuestion];
-      const correct = selectedIndex === q.answer;
-      if (correct) score++;
-
-      quizBox.innerHTML = `
-        <p><strong>${correct ? 'Correct!' : 'Incorrect.'}</strong> ${q.explanation}</p>
-        <button id="nextQuestion">${currentQuestion === quizQuestions.length - 1 ? 'See Results' : 'Next Question'}</button>
-      `;
-
-      document.getElementById('nextQuestion').addEventListener('click', () => {
-        currentQuestion++;
-        if (currentQuestion < quizQuestions.length) {
-          renderQuestion();
-        } else {
-          renderQuizResults();
-        }
-      });
-    }
-
-    function renderQuizResults() {
-      const message = score >= quizQuestions.length * 0.75
-        ? 'Liveability Legend! You really understand what makes cities tick.'
-        : 'Keep practising! Explore how environment and services shape daily life.';
-      quizBox.innerHTML = `
-        <p><strong>Final score:</strong> ${score} / ${quizQuestions.length}</p>
-        <p>${message}</p>
-        <button id="restartQuiz">Restart Quiz</button>
-      `;
-      document.getElementById('restartQuiz').addEventListener('click', startQuiz);
-    }
-
-    function startQuiz() {
-      currentQuestion = 0;
-      score = 0;
-      renderQuestion();
-    }
-
-    document.getElementById('startQuiz').addEventListener('click', startQuiz);
-
-    // --- City Battle logic ---
-    const cities = [
-      { name: 'Coastville', stability: 85, healthcare: 90, cultureEnv: 88, education: 80, infrastructure: 82, rating: 1500, owned: true, cost: 0, description: 'Sea breezes, safe harbours, and clean air make Coastville a balanced starter.', traits: ['coastal', 'health'] },
-      { name: 'Riverport', stability: 75, healthcare: 70, cultureEnv: 72, education: 78, infrastructure: 76, rating: 1450, owned: false, cost: 30, description: 'Trade-focused river city with solid schools and buzzing markets.', traits: ['coastal', 'transit'] },
-      { name: 'Desert City', stability: 60, healthcare: 55, cultureEnv: 50, education: 58, infrastructure: 62, rating: 1420, owned: false, cost: 20, description: 'Heat-tough residents rely on resourceful transport and creative cooling.', traits: ['resilient'] },
-      { name: 'Mountain Ridge', stability: 82, healthcare: 78, cultureEnv: 85, education: 74, infrastructure: 79, rating: 1490, owned: false, cost: 35, description: 'High-altitude haven with clear skies and strong safety numbers.', traits: ['mountain', 'resilient'] },
-      { name: 'Forest Glen', stability: 68, healthcare: 71, cultureEnv: 77, education: 69, infrastructure: 70, rating: 1440, owned: false, cost: 26, description: 'Green belts and bike trails fuel good health and calm commutes.', traits: ['green', 'culture'] },
-      { name: 'Harborview', stability: 80, healthcare: 82, cultureEnv: 79, education: 81, infrastructure: 83, rating: 1480, owned: false, cost: 36, description: 'Busy port with quality hospitals and swift ferries across the bay.', traits: ['coastal', 'transit'] },
-      { name: 'Lakeside', stability: 73, healthcare: 76, cultureEnv: 74, education: 77, infrastructure: 75, rating: 1460, owned: false, cost: 28, description: 'Waterfront promenades and tidy tram lines keep life flowing smoothly.', traits: ['coastal', 'education'] },
-      { name: 'Sunset Plains', stability: 65, healthcare: 68, cultureEnv: 69, education: 64, infrastructure: 66, rating: 1430, owned: false, cost: 22, description: 'Open skies, farm-fresh food, and long rail lines out to the horizon.', traits: ['culture', 'resilient'] },
-      { name: 'Aurora Heights', stability: 88, healthcare: 85, cultureEnv: 90, education: 84, infrastructure: 86, rating: 1525, owned: false, cost: 45, description: 'Glowing skyline, great museums, and stellar public transit keep morale high.', traits: ['culture', 'tech'] },
-      { name: 'Tidepool Borough', stability: 70, healthcare: 74, cultureEnv: 80, education: 72, infrastructure: 71, rating: 1455, owned: false, cost: 27, description: 'Marine parks and careful pollution controls boost culture and environment.', traits: ['coastal', 'green'] },
-      { name: 'Snowcap City', stability: 78, healthcare: 79, cultureEnv: 76, education: 82, infrastructure: 80, rating: 1475, owned: false, cost: 33, description: 'Winter-ready transit and reliable heating keep daily life steady.', traits: ['resilient', 'education'] },
-      { name: 'Coral Quay', stability: 69, healthcare: 73, cultureEnv: 81, education: 68, infrastructure: 72, rating: 1445, owned: false, cost: 25, description: 'Beachside arts scene with coral conservation projects and lively festivals.', traits: ['coastal', 'culture'] },
-      { name: 'Metro Nexus', stability: 77, healthcare: 80, cultureEnv: 78, education: 83, infrastructure: 88, rating: 1505, owned: false, cost: 42, description: 'Bullet trains, fibre internet, and night classes make this the mobility capital.', traits: ['transit', 'tech'] },
-      { name: 'Cedar Grove', stability: 72, healthcare: 74, cultureEnv: 79, education: 71, infrastructure: 73, rating: 1458, owned: false, cost: 29, description: 'Shaded bike boulevards and recycling hubs keep the air crisp.', traits: ['green'] },
-      { name: 'Glacier Bay', stability: 81, healthcare: 82, cultureEnv: 78, education: 75, infrastructure: 80, rating: 1492, owned: false, cost: 38, description: 'Cold seas, cable cars, and resilient housing handle storms with ease.', traits: ['coastal', 'mountain'] },
-      { name: 'Solaris Point', stability: 74, healthcare: 77, cultureEnv: 82, education: 79, infrastructure: 78, rating: 1478, owned: false, cost: 34, description: 'Solar farms and green roofs power lively neighbourhood squares.', traits: ['tech', 'green'] }
-    ];
-
-    let tokens = 60; // starter cash to recruit two allies quickly
-    let rankPoints = 0;
-    let wins = 0;
-    const userScores = [];
-
-    const rankScaleData = [
-      { label: 'Rookie Planner', min: 0, note: 'Learning drafts, light bots.' },
-      { label: 'Local Strategist', min: 80, note: 'Bots gain a small edge.' },
-      { label: 'Regional Rival', min: 150, note: 'Opponents coordinate synergies.' },
-      { label: 'Continental Captain', min: 250, note: 'Tournaments unlock, bots get serious boosts.' },
-      { label: 'World Dominator', min: 400, note: 'Top tier—expect heavy bonuses and championship finals.' }
-    ];
-
-    const proPlayers = [
-      { name: 'SkylineAce', avg: 182.5, rank: 'World Dominator' },
-      { name: 'HarborHero', avg: 176.4, rank: 'Continental Captain' },
-      { name: 'EcoSpark', avg: 170.2, rank: 'Regional Rival' }
-    ];
-
-    const tokenCount = document.getElementById('tokenCount');
-    const rankTitle = document.getElementById('rankTitle');
-    const winCount = document.getElementById('winCount');
-    const cityList = document.getElementById('cityList');
-    const upgradeSelect = document.getElementById('upgradeSelect');
-    const rankScale = document.getElementById('rankScale');
-    const metaList = document.getElementById('metaList');
-    const playerBoard = document.getElementById('playerBoard');
-    const tourneyResult = document.getElementById('tourneyResult');
-    const tournamentBtn = document.getElementById('tournamentBtn');
-
-      { name: 'Coastville', stability: 85, healthcare: 90, cultureEnv: 88, education: 80, infrastructure: 82, rating: 1500 },
-      { name: 'Riverport', stability: 75, healthcare: 70, cultureEnv: 72, education: 78, infrastructure: 76, rating: 1450 },
-      { name: 'Desert City', stability: 60, healthcare: 55, cultureEnv: 50, education: 58, infrastructure: 62, rating: 1420 },
-      { name: 'Mountain Ridge', stability: 82, healthcare: 78, cultureEnv: 85, education: 74, infrastructure: 79, rating: 1490 },
-      { name: 'Forest Glen', stability: 68, healthcare: 71, cultureEnv: 77, education: 69, infrastructure: 70, rating: 1440 },
-      { name: 'Harborview', stability: 80, healthcare: 82, cultureEnv: 79, education: 81, infrastructure: 83, rating: 1480 },
-      { name: 'Lakeside', stability: 73, healthcare: 76, cultureEnv: 74, education: 77, infrastructure: 75, rating: 1460 },
-      { name: 'Sunset Plains', stability: 65, healthcare: 68, cultureEnv: 69, education: 64, infrastructure: 66, rating: 1430 }
-    ];
-
-    const cityList = document.getElementById('cityList');
-    function cityOverall(city) {
-      return (city.stability + city.healthcare + city.cultureEnv + city.education + city.infrastructure) / 5;
-    }
-
-    function getRankLabel(points) {
-      if (points >= 400) return 'World Dominator';
-      if (points >= 250) return 'Continental Captain';
-      if (points >= 150) return 'Regional Rival';
-      if (points >= 80) return 'Local Strategist';
-      return 'Rookie Planner';
-    }
-
-    function renderRankScale() {
-      rankScale.innerHTML = rankScaleData
-        .map(r => `<li><strong>${r.label}</strong> (${r.min}+ pts) — ${r.note}</li>`)
+    function renderSquad() {
+      lineupCount.textContent = `${playingXi.length} in playing XI`;
+      squadList.innerHTML = squad
+        .map(player => {
+          const inXi = playingXi.includes(player.name);
+          return `
+            <div class="player-card">
+              <div>
+                <strong>${player.name}</strong> <span class="tag">${player.role}</span><br />
+                <span class="muted">${player.specialty}</span>
+              </div>
+              <button class="button${inXi ? ' danger' : ''}" data-player="${player.name}">${inXi ? 'Remove' : 'Add to XI'}</button>
+              <div class="muted">Skill: ${player.skill}</div>
+              <div class="muted">${inXi ? 'In playing XI' : 'Available'}</div>
+            </div>
+          `;
+        })
         .join('');
-    }
 
-    function updateProgressUI() {
-      tokenCount.textContent = tokens;
-      rankTitle.textContent = getRankLabel(rankPoints);
-      winCount.textContent = wins;
-      tournamentBtn.disabled = rankPoints < 250;
-    }
-
-    function renderUpgradeOptions() {
-      const ownedCities = cities.filter(city => city.owned);
-      upgradeSelect.innerHTML = ownedCities.map(city => `<option value="${city.name}">${city.name}</option>`).join('');
-    }
-
-    function renderMetaWatch() {
-      const sorted = [...cities].sort((a, b) => b.rating - a.rating).slice(0, 5);
-      metaList.innerHTML = sorted
-        .map((city, idx) => `<li>#${idx + 1} ${city.name} — rating ${city.rating}, avg ${cityOverall(city).toFixed(1)}</li>`)
-        .join('');
-    }
-
-    function renderPlayerBoard() {
-      const userAvg = userScores.length
-        ? (userScores.reduce((sum, score) => sum + score, 0) / userScores.length).toFixed(1)
-        : '—';
-
-      const entries = [
-        `<li><strong>You</strong>: avg ${userAvg} | Rank ${getRankLabel(rankPoints)}</li>`
-      ].concat(proPlayers.map(p => `<li>${p.name}: avg ${p.avg} | Rank ${p.rank}</li>`));
-
-      playerBoard.innerHTML = entries.join('');
-    }
-
-    function traitCounts(team) {
-      return team.reduce((map, city) => {
-        (city.traits || []).forEach(t => {
-          map[t] = (map[t] || 0) + 1;
-        });
-        return map;
-      }, {});
-    }
-
-    function calculateSynergy(team) {
-      const counts = traitCounts(team);
-      const has = (t) => Boolean(counts[t]);
-      const num = (t) => counts[t] || 0;
-      let bonus = 0;
-      const notes = [];
-
-      if (num('coastal') >= 2) {
-        bonus += 6;
-        notes.push('Coastal chain: ports and ferries sync for +6.');
-      }
-      if (has('mountain') && has('education')) {
-        bonus += 4;
-        notes.push('Mountain knowledge: resilient schools add +4.');
-      }
-      if (num('green') >= 2) {
-        bonus += 5;
-        notes.push('Green grid: paired eco towns push clean power for +5.');
-      }
-      if (has('transit') && has('tech')) {
-        bonus += 5;
-        notes.push('Metro express: smart mobility adds +5.');
-      }
-      if (num('culture') >= 2) {
-        bonus += 4;
-        notes.push('Festival circuit: art scenes lift morale for +4.');
-      }
-      if (has('resilient') && has('health')) {
-        bonus += 3;
-        notes.push('Wellbeing duo: sturdy services and clinics add +3.');
-      }
-
-      return { bonus, notes };
-    }
-
-    function renderCities() {
-      cityList.innerHTML = cities.map((city, index) => {
-        const ownedBadge = city.owned ? '<span class="pill">Owned</span>' : '';
-        const buyButton = city.owned ? '' : `<button class="buy-btn" data-index="${index}" style="margin-top: 0.35rem;">Buy for ${city.cost} tokens</button>`;
-        const disabled = city.owned ? '' : 'disabled';
-
-        return `
-        <div class="city-card">
-          <div class="flex" style="justify-content: space-between; align-items: center;">
-            <h4>${city.name}</h4>
-            <input type="checkbox" class="city-pick" data-index="${index}" ${disabled} aria-label="Select ${city.name}">
-          </div>
-          <p class="score">Rating: ${city.rating}</p>
-          <p class="small muted">${city.description}</p>
-          <div class="small" style="margin: 0.25rem 0;">${(city.traits || []).map(t => `<span class="tag">${t}</span>`).join(' ')}</div>
-          <div class="flex small" style="flex-wrap: wrap; gap: 0.25rem;">
-    function renderCities() {
-      cityList.innerHTML = cities.map((city, index) => `
-        <div class="city-card">
-          <div class="flex" style="justify-content: space-between; align-items: center;">
-            <h4>${city.name}</h4>
-            <input type="checkbox" class="city-pick" data-index="${index}" aria-label="Select ${city.name}">
-          </div>
-          <p class="score">Rating: ${city.rating}</p>
-          <div class="flex small">
-            <span class="pill">Avg: ${cityOverall(city).toFixed(1)}</span>
-            <span class="pill">Stability ${city.stability}</span>
-            <span class="pill">Health ${city.healthcare}</span>
-            <span class="pill">Culture/Env ${city.cultureEnv}</span>
-            <span class="pill">Education ${city.education}</span>
-            <span class="pill">Infra ${city.infrastructure}</span>
-          </div>
-          <div class="flex" style="margin-top: 0.4rem; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
-            ${ownedBadge}
-            ${city.owned ? '' : `<span class="pill" style="background:#fff4e5;color:#c25d00;">Cost: ${city.cost}</span>`}
-            ${buyButton}
-          </div>
-        </div>`;
-      }).join('');
-
-      document.querySelectorAll('.buy-btn').forEach(btn => {
+      document.querySelectorAll('[data-player]').forEach(btn => {
         btn.addEventListener('click', () => {
-          const index = Number(btn.dataset.index);
-          const city = cities[index];
-          if (city.owned) return;
-          if (tokens < city.cost) {
-            alert('Not enough tokens to buy this city. Win more battles!');
-            return;
+          const name = btn.dataset.player;
+          const inXi = playingXi.includes(name);
+          if (inXi) {
+            playingXi = playingXi.filter(p => p !== name);
+          } else {
+            playingXi.push(name);
           }
-          tokens -= city.cost;
-          city.owned = true;
-          updateProgressUI();
-          renderCities();
-          renderUpgradeOptions();
-          renderMetaWatch();
-          renderPlayerBoard();
+          renderSquad();
+          renderXi();
+          updateStrategyNote();
         });
       });
     }
 
-    renderCities();
-    renderUpgradeOptions();
-    updateProgressUI();
-    renderRankScale();
-    renderMetaWatch();
-    renderPlayerBoard();
-          </div>
-        </div>
-      `).join('');
-    }
+    function renderXi() {
+      xiList.innerHTML = playingXi
+        .map((name, idx) => {
+          const player = squad.find(p => p.name === name);
+          if (!player) return '';
+          return `
+            <div class="player-card">
+              <div>
+                <strong>#${idx + 1} ${player.name}</strong> <span class="tag">${player.role}</span><br />
+                <span class="muted">${player.specialty}</span>
+              </div>
+              <div class="row">
+                <button class="button" data-move="up" data-idx="${idx}">↑</button>
+                <button class="button" data-move="down" data-idx="${idx}">↓</button>
+              </div>
+              <div class="muted">Skill: ${player.skill}</div>
+              <button class="button danger" data-remove="${name}">Remove</button>
+            </div>
+          `;
+        })
+        .join('');
 
-    renderCities();
-
-    function pickUserTeam() {
-      const selected = Array.from(document.querySelectorAll('.city-pick:checked')).map(cb => Number(cb.dataset.index));
-      if (selected.length !== 3) {
-        alert('Please pick exactly three owned cities for your team.');
-        alert('Please pick exactly three cities for your team.');
-        return null;
-      }
-      return selected.map(i => cities[i]);
-    }
-
-    function pickBotTeam(userIndexes) {
-      const remaining = cities.filter((_, idx) => !userIndexes.includes(idx));
-      // Shuffle remaining and take first three
-      for (let i = remaining.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [remaining[i], remaining[j]] = [remaining[j], remaining[i]];
-      }
-      return remaining.slice(0, 3);
-    }
-
-    function getBotDifficultyBonus(points) {
-      // The bot grows tougher as you climb ranks. Higher rank points add a flat bonus to the bot's team score.
-      if (points >= 400) return 18;
-      if (points >= 250) return 12;
-      if (points >= 150) return 8;
-      if (points >= 80) return 4;
-      return 0;
-    }
-
-    function teamScore(team, bonus = 0) {
-      // Team score blends liveability averages, synergies, and a little randomness to keep battles lively.
-      const synergy = calculateSynergy(team);
-      const base = team.reduce((sum, city) => sum + cityOverall(city), 0);
-      return { total: base + synergy.bonus + bonus + (Math.random() * 8 - 2), synergy };
-    }
-
-    function adjustRatings(userTeam, botTeam, outcome) {
-      const changeWin = 18;
-      const changeLose = -12;
-      const changeDraw = 5;
-    function teamScore(team) {
-      // Team score is the sum of each city's average category score with a tiny random factor
-      return team.reduce((sum, city) => sum + cityOverall(city), 0) + Math.random() * 5;
-    }
-
-    function adjustRatings(userTeam, botTeam, outcome) {
-      const changeWin = 15;
-      const changeLose = -12;
-      const changeDraw = 3;
-      const summary = [];
-
-      if (outcome === 'win') {
-        userTeam.forEach(city => { summary.push(`${city.name}: ${city.rating} → ${city.rating + changeWin}`); city.rating += changeWin; });
-        botTeam.forEach(city => { summary.push(`${city.name}: ${city.rating} → ${city.rating + changeLose}`); city.rating += changeLose; });
-      } else if (outcome === 'lose') {
-        userTeam.forEach(city => { summary.push(`${city.name}: ${city.rating} → ${city.rating + changeLose}`); city.rating += changeLose; });
-        botTeam.forEach(city => { summary.push(`${city.name}: ${city.rating} → ${city.rating + changeWin}`); city.rating += changeWin; });
-      } else {
-        userTeam.forEach(city => { summary.push(`${city.name}: ${city.rating} → ${city.rating + changeDraw}`); city.rating += changeDraw; });
-        botTeam.forEach(city => { summary.push(`${city.name}: ${city.rating} → ${city.rating + changeDraw}`); city.rating += changeDraw; });
-      }
-      return summary;
-    }
-
-    function earnRewards(outcome) {
-      let earnedTokens = 0;
-      if (outcome === 'win') {
-        earnedTokens = 30;
-        rankPoints += 25;
-        wins += 1;
-      } else if (outcome === 'draw') {
-        earnedTokens = 10;
-        rankPoints += 10;
-      } else {
-        earnedTokens = 5;
-        rankPoints += 5;
-      }
-      tokens += earnedTokens;
-      updateProgressUI();
-      return earnedTokens;
-    }
-
-    function randomBattleFlavor() {
-      const moments = [
-        'A burst of green transit projects wowed the judges.',
-        'Healthcare teams pulled off smooth emergency drills.',
-        'Cultural festivals boosted morale mid-match.',
-        'A surprise heatwave tested infrastructure resilience.',
-        'Students rallied with quick-learning pop-up classes.'
-      ];
-      return moments[Math.floor(Math.random() * moments.length)];
-    }
-
-    document.getElementById('battleBtn').addEventListener('click', () => {
-      const userIndexes = Array.from(document.querySelectorAll('.city-pick:checked')).map(cb => Number(cb.dataset.index));
-      const userTeam = pickUserTeam();
-      if (!userTeam) return;
-      const botTeam = pickBotTeam(userIndexes);
-
-      const userScore = teamScore(userTeam);
-      const difficultyBonus = getBotDifficultyBonus(rankPoints);
-      const botScore = teamScore(botTeam, difficultyBonus);
-      let outcome = 'draw';
-      let winnerText = 'Draw! Both teams stayed neck and neck.';
-
-      if (userScore.total > botScore.total + 0.5) {
-        outcome = 'win';
-        winnerText = 'Victory! Your crew set the standard for liveability.';
-      } else if (botScore.total > userScore.total + 0.5) {
-        outcome = 'lose';
-        winnerText = 'Bot wins! Scout fresh upgrades and try again.';
-      }
-
-      const ratingChanges = adjustRatings(userTeam, botTeam, outcome);
-      const earned = earnRewards(outcome);
-      userScores.push(userScore.total);
-      renderCities();
-      renderUpgradeOptions();
-      renderMetaWatch();
-      renderPlayerBoard();
-
-      const synergyNote = userScore.synergy.notes.length ? userScore.synergy.notes.join(' ') : 'No special combo bonuses this time.';
-      document.getElementById('battleResult').innerHTML = `
-        <p><strong>${winnerText}</strong> ${randomBattleFlavor()}</p>
-        <p>Your team score: ${userScore.total.toFixed(1)} | Bot team score: ${botScore.total.toFixed(1)}</p>
-        <p>Rewards: +${earned} tokens | Rank: ${getRankLabel(rankPoints)}</p>
-        <p class="small muted">Difficulty boost: Bot gained +${difficultyBonus.toFixed(1)} because you're ranked ${getRankLabel(rankPoints)}.</p>
-        <p class="small">Synergy boosts: ${synergyNote}</p>
-        <div class="battle-summary">
-          <p><strong>Rating changes:</strong></p>
-          <ul>${ratingChanges.map(change => `<li>${change}</li>`).join('')}</ul>
-        </div>
-      `;
-    });
-
-    document.getElementById('tournamentBtn').addEventListener('click', () => {
-      if (rankPoints < 250) {
-        alert('Reach Continental Captain (250 rank points) to enter championships.');
-        return;
-      }
-
-      const userIndexes = Array.from(document.querySelectorAll('.city-pick:checked')).map(cb => Number(cb.dataset.index));
-      const userTeam = pickUserTeam();
-      if (!userTeam) return;
-      const botTeam = pickBotTeam(userIndexes);
-
-      const difficultyBonus = getBotDifficultyBonus(rankPoints) + 15; // finals are spicier
-      const rounds = [];
-      let userRoundWins = 0;
-      let botRoundWins = 0;
-      let userSum = 0;
-      let botSum = 0;
-
-      for (let i = 1; i <= 3; i++) {
-        const userScore = teamScore(userTeam);
-        const botScore = teamScore(botTeam, difficultyBonus);
-        userSum += userScore.total;
-        botSum += botScore.total;
-        if (userScore.total > botScore.total + 0.25) userRoundWins += 1;
-        else if (botScore.total > userScore.total + 0.25) botRoundWins += 1;
-        rounds.push(`Round ${i}: You ${userScore.total.toFixed(1)} vs Bot ${botScore.total.toFixed(1)}`);
-      }
-
-      let outcome = 'draw';
-      if (userRoundWins > botRoundWins) outcome = 'win';
-      else if (botRoundWins > userRoundWins) outcome = 'lose';
-
-      let tokenReward = 0;
-      let rankGain = 0;
-      let winnerLine = 'Championship draw! You split the glory.';
-
-      if (outcome === 'win') {
-        tokenReward = 120;
-        rankGain = 70;
-        wins += 2;
-        winnerLine = 'Champion! You swept the bracket and earned a huge token haul.';
-      } else if (outcome === 'lose') {
-        tokenReward = 35;
-        rankGain = 25;
-        winnerLine = 'Bot claimed the cup—train and try again.';
-      } else {
-        tokenReward = 60;
-        rankGain = 35;
-        wins += 1;
-      }
-
-      tokens += tokenReward;
-      rankPoints += rankGain;
-      const ratingChanges = adjustRatings(userTeam, botTeam, outcome);
-      userScores.push(userSum / 3);
-      renderCities();
-      renderUpgradeOptions();
-      renderMetaWatch();
-      renderPlayerBoard();
-      updateProgressUI();
-
-      const synergyNote = calculateSynergy(userTeam).notes.join(' ') || 'No special combo bonuses this time.';
-      tourneyResult.innerHTML = `
-        <p><strong>${winnerLine}</strong> Championship bonus difficulty: +${difficultyBonus.toFixed(1)}</p>
-        <p>Series result: ${userRoundWins}-${botRoundWins} (avg score you ${ (userSum / 3).toFixed(1) } vs bot ${ (botSum / 3).toFixed(1) })</p>
-        <p>Rewards: +${tokenReward} tokens | +${rankGain} rank points | Current rank: ${getRankLabel(rankPoints)}</p>
-        <p class="small">Synergy boosts applied: ${synergyNote}</p>
-        <div class="battle-summary">
-          <p><strong>Rounds:</strong></p>
-          <ul>${rounds.map(r => `<li>${r}</li>`).join('')}</ul>
-      const botScore = teamScore(botTeam);
-      let outcome = 'draw';
-      let winnerText = 'Draw! Both teams were evenly matched.';
-
-      if (userScore > botScore + 0.5) {
-        outcome = 'win';
-        winnerText = 'You win! Your draft delivered higher liveability.';
-      } else if (botScore > userScore + 0.5) {
-        outcome = 'lose';
-        winnerText = 'Bot wins! Try picking different strengths next time.';
-      }
-
-      // Adjust ratings based on outcome
-      const ratingChanges = adjustRatings(userTeam, botTeam, outcome);
-      renderCities();
-
-      document.getElementById('battleResult').innerHTML = `
-        <p><strong>${winnerText}</strong></p>
-        <p>Your team score: ${userScore.toFixed(1)} | Bot team score: ${botScore.toFixed(1)}</p>
-        <div class="battle-summary">
-          <p><strong>Rating changes:</strong></p>
-          <ul>${ratingChanges.map(change => `<li>${change}</li>`).join('')}</ul>
-        </div>
-      `;
-    });
-
-    document.getElementById('upgradeBtn').addEventListener('click', () => {
-      const selectedName = upgradeSelect.value;
-      const city = cities.find(c => c.name === selectedName);
-      if (!city || !city.owned) {
-        alert('Pick an owned city to upgrade.');
-        return;
-      }
-      const cost = 20;
-      if (tokens < cost) {
-        alert('Not enough tokens for an upgrade. Win another battle!');
-        return;
-      }
-      tokens -= cost;
-      ['stability', 'healthcare', 'cultureEnv', 'education', 'infrastructure'].forEach(key => {
-        city[key] = Math.min(100, city[key] + 2);
+      document.querySelectorAll('[data-remove]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          playingXi = playingXi.filter(p => p !== btn.dataset.remove);
+          renderSquad();
+          renderXi();
+          updateStrategyNote();
+        });
       });
-      city.rating += 8;
-      updateProgressUI();
-      renderCities();
-      renderUpgradeOptions();
-      renderMetaWatch();
-      renderPlayerBoard();
+
+      document.querySelectorAll('[data-move]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const idx = Number(btn.dataset.idx);
+          if (btn.dataset.move === 'up' && idx > 0) {
+            [playingXi[idx - 1], playingXi[idx]] = [playingXi[idx], playingXi[idx - 1]];
+          }
+          if (btn.dataset.move === 'down' && idx < playingXi.length - 1) {
+            [playingXi[idx + 1], playingXi[idx]] = [playingXi[idx], playingXi[idx + 1]];
+          }
+          renderXi();
+          updateStrategyNote();
+        });
+      });
+    }
+
+    function renderChores() {
+      choreCount.textContent = `${chores.length} chore shots`;
+      choreList.innerHTML = chores
+        .map(chore => `
+          <div class="chore-card">
+            <div>
+              <strong>${chore.name}</strong> <span class="tag">${chore.runs} runs</span><br />
+              <span class="muted">Effort: ${chore.effort} · ${chore.note || ''}</span>
+            </div>
+            <div class="muted">Risk ${Math.min(90, chore.effort * 15)}%</div>
+          </div>
+        `)
+        .join('');
+    }
+
+    function clamp(num, min, max) {
+      return Math.max(min, Math.min(max, num));
+    }
+
+    function oversText() {
+      return `${Math.floor(balls / 6)}.${balls % 6}`;
+    }
+
+    function updateScoreboard() {
+      scoreDisplay.textContent = `${runs} / ${wickets}`;
+      overDisplay.textContent = oversText();
+      batterDisplay.textContent = playingXi[clamp(batterIndex, 0, playingXi.length - 1)] || '—';
+      const vibe = momentum > 6 ? 'Chaotic' : momentum > 2 ? 'Buzzing' : momentum < -3 ? 'Chilled' : 'Calm';
+      momentumDisplay.textContent = vibe;
+      titleStat.textContent = `${runs}/${wickets} in ${oversText()} overs`;
+      renderMomentumList();
+    }
+
+    function pushLog(entry) {
+      commentary.unshift(entry);
+      if (commentary.length > 10) commentary.pop();
+      logBox.innerHTML = commentary.map(line => `<div class="muted">${line}</div>`).join('');
+    }
+
+    function renderMomentumList() {
+      const tips = [];
+      if (momentum > 5) tips.push('Switch to lower-effort chores to protect wickets.');
+      if (momentum < -2) tips.push('Try a tougher chore to boost run rate.');
+      if (wickets >= playingXi.length - 1) tips.push('Last pair! Choose the safest chore available.');
+      if (!tips.length) tips.push('Keep rotating strike between specialties.');
+      momentumList.innerHTML = tips.map(t => `<div class="player-card" style="grid-template-columns: 1fr;">${t}</div>`).join('');
+    }
+
+    function rollBall() {
+      if (!playingXi.length) {
+        pushLog('No players in XI. Add at least one player.');
+        updateScoreboard();
+        return false;
+      }
+      if (!chores.length) {
+        pushLog('No chores on the board. Add at least one chore shot.');
+        updateScoreboard();
+        return false;
+      }
+      if (wickets >= playingXi.length) {
+        pushLog('All out! Reset the innings.');
+        updateScoreboard();
+        return false;
+      }
+
+      const batterName = playingXi[batterIndex % playingXi.length];
+      const batter = squad.find(p => p.name === batterName) || { skill: 50, role: 'Player', specialty: 'General' };
+      const chore = chores[Math.floor(Math.random() * chores.length)];
+      const baseChance = (batter.skill + 25 - chore.effort * 10) / 120;
+      const chance = clamp(baseChance + momentum * -0.01, 0.08, 0.92);
+      const isSuccess = Math.random() < chance;
+      const bonus = batter.skill > 85 && Math.random() < 0.25 ? 1 : 0;
+
+      balls += 1;
+      momentum += chore.effort - 3;
+
+      if (isSuccess) {
+        const earned = clamp(chore.runs + bonus, 1, 8);
+        runs += earned;
+        pushLog(`${batter.name} nails a ${chore.name} for ${earned} run${earned === 1 ? '' : 's'}. (${batter.role}, ${batter.specialty})`);
+      } else {
+        wickets += 1;
+        batterIndex += 1;
+        momentum -= 2;
+        pushLog(`WICKET! ${batter.name} miscues the ${chore.name}. Household groans.`);
+      }
+
+      if (balls % 6 === 0) {
+        momentum -= 1;
+        pushLog(`Over complete. Score is ${runs}/${wickets} in ${oversText()} overs.`);
+      }
+
+      updateScoreboard();
+      return true;
+    }
+
+    function simulateOver() {
+      for (let i = 0; i < 6; i += 1) {
+        const played = rollBall();
+        if (!played) break;
+        if (wickets >= playingXi.length) break;
+      }
+    }
+
+    function resetMatch() {
+      balls = 0;
+      runs = 0;
+      wickets = 0;
+      batterIndex = 0;
+      momentum = 0;
+      commentary = [];
+      logBox.innerHTML = '';
+      pushLog('New innings. Warm up with easy chores.');
+      updateScoreboard();
+    }
+
+    document.getElementById('simulateBall').addEventListener('click', rollBall);
+    document.getElementById('simulateOver').addEventListener('click', simulateOver);
+    document.getElementById('resetMatch').addEventListener('click', resetMatch);
+    document.getElementById('clearXi').addEventListener('click', () => {
+      playingXi = [];
+      renderSquad();
+      renderXi();
+      updateScoreboard();
+      updateStrategyNote();
     });
 
-    // Calculate once at start to show initial results
-    calculateLiveability();
+    document.getElementById('quickStart').addEventListener('click', () => {
+      resetMatch();
+      simulateOver();
+    });
+
+    document.getElementById('addPlayer').addEventListener('click', () => {
+      const name = document.getElementById('playerName').value.trim();
+      const role = document.getElementById('playerRole').value;
+      const specialty = document.getElementById('playerChore').value.trim() || 'House chores';
+      const skill = clamp(Number(document.getElementById('playerSkill').value) || 50, 1, 100);
+
+      if (!name) {
+        alert('Name is required.');
+        return;
+      }
+
+      squad.push({ name, role, specialty, skill });
+      playingXi.push(name);
+      renderSquad();
+      renderXi();
+      updateStrategyNote();
+    });
+
+    document.getElementById('addChore').addEventListener('click', () => {
+      const name = document.getElementById('choreName').value.trim();
+      const effort = clamp(Number(document.getElementById('choreEffort').value) || 1, 1, 6);
+      const runsVal = clamp(Number(document.getElementById('choreRuns').value) || 1, 1, 6);
+      const note = document.getElementById('choreNote').value.trim();
+
+      if (!name) {
+        alert('Chore name is required.');
+        return;
+      }
+
+      chores.push({ name, effort, runs: runsVal, note });
+      renderChores();
+      pushLog(`New chore added: ${name} (${runsVal} runs, effort ${effort}).`);
+    });
+
+    renderSquad();
+    renderXi();
+    renderChores();
+    updateStrategyNote();
+    resetMatch();
   </script>
 </body>
 </html>
