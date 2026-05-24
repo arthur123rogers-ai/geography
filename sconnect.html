@@ -585,6 +585,11 @@ function renderContent() {
   const headerEl = $('main-header').querySelector('h1');
   let headerHtml = '', contentHtml = '', footerDisplay = 'none';
 
+  // Default to role home if view is unset or generic
+  if (!state.view || state.view === 'home') {
+    state.view = u.role === 'admin' ? 'admin-home' : u.role === 'teacher' ? 'teacher-home' : 'student-home';
+  }
+
   if (state.view === 'admin-home') {
     const allUsers = state.users.filter(u => u.schoolId === state.currentSchool.id);
     const allClasses = state.classes.filter(c => c.schoolId === state.currentSchool.id);
@@ -654,6 +659,32 @@ function renderContent() {
             </div>
           </div>`).join('') : `<div class="empty-state"><div class="empty-icon">📚</div><p>No year classes yet</p></div>`}
         <button class="btn btn-success" style="width:100%;padding:11px;margin-top:12px;justify-content:center;" onclick="createGeneralClass()">＋ Create Year Class</button>
+      </div>
+    `;
+
+  } else if (state.view === 'admin-settings') {
+    headerHtml = 'Settings';
+    contentHtml = `
+      <div class="card">
+        <div class="section-title">School Details</div>
+        <div class="school-code-wrap">
+          <div>
+            <div class="school-code-label">School Join Code</div>
+            <div class="school-code-value">${state.currentSchool.code}</div>
+          </div>
+          <button class="copy-btn" onclick="copyCode('${state.currentSchool.code}')">Copy</button>
+        </div>
+        <div class="list-item">
+          <div class="list-item-icon">🏫</div>
+          <div class="list-item-info">
+            <div class="list-item-name">${escapeHtml(state.currentSchool.name)}</div>
+            <div class="list-item-meta">School name</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="section-title">Danger Zone</div>
+        <button class="btn btn-danger" style="width:100%;padding:11px;justify-content:center;" onclick="if(confirm('Sign out?'))handleLogout()">Sign Out</button>
       </div>
     `;
 
