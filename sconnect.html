@@ -355,9 +355,9 @@
             <button class="role-btn" data-role="admin"><span class="role-emoji">👑</span>Admin</button>
           </div>
         </div>
-        <button class="btn btn-primary" style="width:100%;padding:13px;font-size:14px;justify-content:center;" onclick="handleLogin()">Join School →</button>
+        <button type="button" id="btn-do-login" class="btn btn-primary" style="width:100%;padding:13px;font-size:14px;justify-content:center;">Join School →</button>
         <div class="auth-divider">or</div>
-        <button class="btn btn-secondary" style="width:100%;padding:11px;justify-content:center;" onclick="showSignup()">Create a new school</button>
+        <button type="button" id="btn-show-signup" class="btn btn-secondary" style="width:100%;padding:11px;justify-content:center;">Create a new school</button>
       </div>
 
       <div id="signup-form" style="display:none;">
@@ -371,9 +371,9 @@
           <label class="form-label">School Name</label>
           <input class="form-input" id="signup-school" type="text" placeholder="e.g. Lincoln High School" />
         </div>
-        <button class="btn btn-primary" style="width:100%;padding:13px;font-size:14px;justify-content:center;" onclick="handleSignup()">Create School →</button>
+        <button type="button" id="btn-do-signup" class="btn btn-primary" style="width:100%;padding:13px;font-size:14px;justify-content:center;">Create School →</button>
         <div class="auth-divider">or</div>
-        <button class="btn btn-ghost" style="width:100%;padding:11px;justify-content:center;" onclick="showLogin()">← Back to sign in</button>
+        <button type="button" id="btn-show-login" class="btn btn-ghost" style="width:100%;padding:11px;justify-content:center;">← Back to sign in</button>
       </div>
     </div>
   </div>
@@ -390,7 +390,7 @@
         <span class="nav-name" id="nav-user-name">User</span>
         <span class="nav-school" id="nav-school-name">School</span>
       </div>
-      <button class="btn btn-ghost btn-small" onclick="handleLogout()">Sign out</button>
+      <button type="button" id="btn-logout" class="btn btn-ghost btn-small">Sign out</button>
     </div>
   </nav>
 
@@ -411,7 +411,7 @@
       <div class="main-content" id="main-content"></div>
       <div class="main-footer" id="main-footer" style="display:none;">
         <input class="form-input" id="msg-input" type="text" placeholder="Type a message…" />
-        <button class="btn btn-primary btn-small" onclick="sendMessage()">Send</button>
+        <button type="button" id="btn-send" class="btn btn-primary btn-small">Send</button>
       </div>
     </div>
   </div>
@@ -926,6 +926,15 @@ function createGroup() {
   toast('Study group created!', 'success');
   renderApp();
 }
+
+// Wire up all static buttons via addEventListener (never inline onclick)
+document.getElementById('btn-do-login').addEventListener('click', handleLogin);
+document.getElementById('btn-show-signup').addEventListener('click', showSignup);
+document.getElementById('btn-do-signup').addEventListener('click', handleSignup);
+document.getElementById('btn-show-login').addEventListener('click', showLogin);
+document.getElementById('btn-logout').addEventListener('click', handleLogout);
+document.getElementById('btn-send').addEventListener('click', sendMessage);
+document.getElementById('msg-input').addEventListener('keydown', e => { if (e.key === 'Enter') sendMessage(); });
 
 document.querySelectorAll('.role-btn').forEach(btn => {
   btn.addEventListener('click', () => {
