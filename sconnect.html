@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Connect — Geography Liveability</title>
+  <style>
+    :root {
+      --primary: #2b7a78;
+      --secondary: #def2f1;
+      --accent: #fe8a71;
+      --text: #17252a;
+      --card-bg: #ffffff;
+      --muted: #52616b;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(180deg, #f8f9fb 0%, #e7f2f3 100%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    header {
+      background: var(--primary);
+      color: #fff;
+      padding: 1.2rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    h1 { margin: 0 0 0.5rem 0; font-size: 1.6rem; }
+
+    nav {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      background: rgba(255,255,255,0.15);
+      padding: 0.5rem 0.9rem;
+      border-radius: 999px;
+      transition: background 0.2s;
+    }
+
+    nav a:hover, nav a:focus { background: rgba(255,255,255,0.3); }
+
+    main {
+      max-width: 1100px;
+      margin: 1.5rem auto 3rem;
+      padding: 0 1rem;
+    }
+
+    section {
+      background: var(--card-bg);
+      margin-bottom: 1.5rem;
+      padding: 1.5rem;
+      border-radius: 14px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+      border: 1px solid #e2e8f0;
+    }
+
+    h2 { margin-top: 0; color: var(--primary); }
+    h3 { color: var(--primary); }
+
+    .grid { display: grid; gap: 1rem; }
+    .two-col { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+    .three-col { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+
+    .card {
+      background: #f8fbff;
+      border: 1px solid #dfe9f3;
+      border-radius: 12px;
+      padding: 1rem;
+    }
+
+    .card h3 { margin-top: 0; font-size: 1rem; }
+
+    button {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 0.65rem 1.1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      transition: transform 0.15s, box-shadow 0.15s, background 0.2s;
+    }
+
+    button:hover, button:focus {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      background: #236c65;
+    }
+
+    button:disabled {
+      background: #a0b4b3;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      background: #eef7f6;
+      margin-right: 0.25rem;
+      font-size: 0.85rem;
+      color: var(--primary);
+    }
+
+    .muted { color: var(--muted); }
+    .small { font-size: 0.93rem; }
+
+    .flex {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+      color: var(--muted);
+    }
+
+    input[type="text"], textarea, select {
+      width: 100%;
+      padding: 0.6rem;
+      border: 1px solid #cfd8dc;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-family: inherit;
+    }
+
+    textarea { resize: vertical; min-height: 80px; }
+
+    /* Progress bar */
+    .progress-wrap {
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+      height: 12px;
+      margin: 0.4rem 0 0.2rem;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: var(--primary);
+      border-radius: 999px;
+      transition: width 0.4s ease;
+    }
+
+    /* Concept map */
+    .concept-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 0.75rem;
+    }
+
+    .concept-node {
+      border: 2px solid #cce7e5;
+      border-radius: 12px;
+      padding: 0.75rem;
+      text-align: center;
+      background: #f0fafa;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+    }
+
+    .concept-node.active {
+      border-color: var(--primary);
+      background: #d6f0ee;
+    }
+
+    .concept-node .node-icon { font-size: 1.6rem; }
+    .concept-node .node-label { font-size: 0.9rem; font-weight: 700; margin-top: 0.25rem; }
+    .concept-detail {
+      display: none;
+      text-align: left;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .concept-node.active .concept-detail { display: block; }
+
+    /* Flashcard */
+    .flashcard-wrap {
+      perspective: 800px;
+      width: 100%;
+      max-width: 480px;
+      margin: 1rem auto;
+    }
+
+    .flashcard {
+      width: 100%;
+      min-height: 140px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.5s;
+      cursor: pointer;
+    }
+
+    .flashcard.flipped { transform: rotateY(180deg); }
+
+    .flashcard-front, .flashcard-back {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 1px solid #dce5ec;
+      font-size: 1.05rem;
+      text-align: center;
+    }
+
+    .flashcard-front {
+      background: #e8f5f4;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .flashcard-back {
+      background: var(--primary);
+      color: #fff;
+      transform: rotateY(180deg);
+    }
+
+    .flashcard-nav {
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+
+    /* Notes section */
+    .note-list { list-style: none; padding: 0; margin: 0.5rem 0; }
+    .note-list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      background: #f8fbff;
+      border: 1px solid #dfe9f3;
+      border-radius: 8px;
+      padding: 0.5rem 0.75rem;
+      margin-bottom: 0.4rem;
+      font-size: 0.93rem;
+      gap: 0.5rem;
+    }
+
+    .delete-note {
+      background: none;
+      border: none;
+      color: #c0392b;
+      font-size: 0.9rem;
+      cursor: pointer;
+      padding: 0 0.25rem;
+      flex-shrink: 0;
+      box-shadow: none;
+      transform: none;
+    }
+
+    .delete-note:hover { text-decoration: underline; background: none; box-shadow: none; }
+
+    /* Challenge tracker */
+    .challenge-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .challenge-item:last-child { border-bottom: none; }
+
+    .challenge-item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--primary);
+      flex-shrink: 0;
+    }
+
+    .challenge-label { flex: 1; }
+    .challenge-label.done { text-decoration: line-through; color: var(--muted); }
+
+    .badge {
+      display: inline-block;
+      padding: 0.2rem 0.55rem;
+      background: #e8f5e9;
+      color: #2e7d32;
+      border-radius: 10px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .badge.locked { background: #f0f0f0; color: #999; }
+
+    /* Reflection */
+    .reflection-result {
+      background: #f8fbff;
+      border: 1px solid #dce5ec;
+      padding: 1rem;
+      border-radius: 12px;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Student Connect — Geography Liveability</h1>
+    <nav>
+      <a href="index.html">Main App</a>
+      <a href="#concepts">Concept Map</a>
+      <a href="#flashcards">Flashcards</a>
+      <a href="#challenges">Challenges</a>
+      <a href="#notes">My Notes</a>
+      <a href="#reflection">Reflection</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- Welcome bar -->
+    <section id="welcome">
+      <div class="flex" style="justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h2 style="margin-bottom: 0.25rem;">Welcome back!</h2>
+          <p class="muted" style="margin: 0;">Your personal study hub for the Geography Liveability unit.</p>
+        </div>
+        <div style="text-align: right;">
+          <div class="pill" id="xpPill">XP: 0</div>
+          <div class="pill" id="levelPill">Level: Explorer</div>
+        </div>
+      </div>
+      <div style="margin-top: 1rem;">
+        <div class="flex" style="justify-content: space-between;">
+          <span class="small muted">Unit progress</span>
+          <span class="small muted" id="progressLabel">0 / 6 sections visited</span>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-bar" id="unitProgressBar" style="width: 0%;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Concept Map -->
+    <section id="concepts">
+      <h2>Concept Map</h2>
+      <p class="muted">Tap any concept to expand its definition and see how it connects to liveability.</p>
+      <div class="concept-grid" id="conceptGrid"></div>
+    </section>
+
+    <!-- Flashcards -->
+    <section id="flashcards">
+      <h2>Key Term Flashcards</h2>
+      <p class="muted">Tap a card to flip it and reveal the definition. Use the arrows to browse.</p>
+      <div class="flashcard-wrap">
+        <div class="flashcard" id="flashcard" role="button" tabindex="0" aria-label="Flashcard — tap to flip">
+          <div class="flashcard-front" id="fcFront"></div>
+          <div class="flashcard-back" id="fcBack"></div>
+        </div>
+      </div>
+      <div class="flashcard-nav">
+        <button id="fcPrev">← Prev</button>
+        <span class="small muted" id="fcCounter"></span>
+        <button id="fcNext">Next →</button>
+      </div>
+      <p class="small muted" style="text-align:center; margin-top: 0.5rem;">
+        <span id="fcMastered">0</span> of <span id="fcTotal"></span> mastered
+        &nbsp;|&nbsp;
+        <button id="fcMarkBtn" style="font-size:0.85rem; padding: 0.3rem 0.7rem;">Mark as mastered</button>
+      </p>
+    </section>
+
+    <!-- Challenges -->
+    <section id="challenges">
+      <h2>Learning Challenges</h2>
+      <p class="muted">Complete challenges to earn XP and unlock badges. Tick each one when done.</p>
+      <div id="challengeList"></div>
+      <div style="margin-top: 1rem;">
+        <h3>Your Badges</h3>
+        <div class="flex" id="badgeRow" style="flex-wrap: wrap; gap: 0.5rem;"></div>
+      </div>
+    </section>
+
+    <!-- My Notes -->
+    <section id="notes">
+      <h2>My Notes</h2>
+      <p class="muted">Jot down key ideas, definitions, or reminders for this unit.</p>
+      <div class="grid two-col">
+        <div>
+          <label for="noteInput">New note</label>
+          <textarea id="noteInput" placeholder="E.g. Stability means how safe and peaceful daily life is..."></textarea>
+          <button id="addNoteBtn" style="margin-top: 0.5rem;">Add Note</button>
+        </div>
+        <div>
+          <p class="small muted">Saved notes appear below. Click × to delete.</p>
+          <ul class="note-list" id="noteList"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reflection -->
+    <section id="reflection">
+      <h2>Reflection Journal</h2>
+      <p class="muted">Answer these prompts to deepen your understanding. Your reflections stay in your browser.</p>
+      <div class="grid two-col">
+        <div>
+          <label for="reflectQ1">What is one thing you learned about liveability that surprised you?</label>
+          <textarea id="reflectQ1" placeholder="Write your thoughts here..."></textarea>
+        </div>
+        <div>
+          <label for="reflectQ2">Which city in the app would you most want to live in, and why?</label>
+          <textarea id="reflectQ2" placeholder="Write your thoughts here..."></textarea>
+        </div>
+        <div>
+          <label for="reflectQ3">How could your own neighbourhood improve its liveability score?</label>
+          <textarea id="reflectQ3" placeholder="Think about environment, transport, safety..."></textarea>
+        </div>
+        <div>
+          <label for="reflectQ4">Describe one connection between environment quality and liveability.</label>
+          <textarea id="reflectQ4" placeholder="E.g. clean air → fewer health problems → better healthcare score"></textarea>
+        </div>
+      </div>
+      <div class="flex" style="margin-top: 1rem; gap: 0.75rem;">
+        <button id="saveReflection">Save Reflection</button>
+        <button id="clearReflection" style="background: #a0b4b3;">Clear All</button>
+      </div>
+      <div class="reflection-result" id="reflectionResult" style="display:none;"></div>
+    </section>
+
+  </main>
+
+  <script>
+    // --- XP & level system ---
+    let xp = Number(localStorage.getItem('sc_xp') || 0);
+    const sectionsVisited = new Set(JSON.parse(localStorage.getItem('sc_visited') || '[]'));
+
+    const levels = [
+      { label: 'Explorer', min: 0 },
+      { label: 'Analyst', min: 50 },
+      { label: 'Planner', min: 120 },
+      { label: 'Strategist', min: 220 },
+      { label: 'Liveability Legend', min: 350 }
+    ];
+
+    function getLevel(points) {
+      let label = levels[0].label;
+      for (const l of levels) {
+        if (points >= l.min) label = l.label;
+      }
+      return label;
+    }
+
+    function updateXPUI() {
+      document.getElementById('xpPill').textContent = `XP: ${xp}`;
+      document.getElementById('levelPill').textContent = `Level: ${getLevel(xp)}`;
+      const count = sectionsVisited.size;
+      document.getElementById('progressLabel').textContent = `${count} / 6 sections visited`;
+      document.getElementById('unitProgressBar').style.width = `${Math.round((count / 6) * 100)}%`;
+      localStorage.setItem('sc_xp', xp);
+      localStorage.setItem('sc_visited', JSON.stringify([...sectionsVisited]));
+    }
+
+    function awardXP(amount) {
+      xp += amount;
+      updateXPUI();
+    }
+
+    // Track section visits using IntersectionObserver
+    const sectionIds = ['concepts', 'flashcards', 'challenges', 'notes', 'reflection', 'welcome'];
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !sectionsVisited.has(entry.target.id)) {
+          sectionsVisited.add(entry.target.id);
+          awardXP(5);
+          updateXPUI();
+        }
+      });
+    }, { threshold: 0.3 });
+
+    sectionIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    updateXPUI();
+
+    // --- Concept Map ---
+    const concepts = [
+      { icon: '🏙️', label: 'Liveability', detail: 'How comfortable and enjoyable daily life is in a city, rated across stability, healthcare, culture, education and infrastructure.' },
+      { icon: '⚖️', label: 'Stability', detail: 'How safe and peaceful a city is, including low crime rates and political calm.' },
+      { icon: '🏥', label: 'Healthcare', detail: 'Access to hospitals, clinics, and clean water that keep residents healthy.' },
+      { icon: '🌿', label: 'Environment', detail: 'Air quality, green spaces, and water quality that make outdoor life pleasant.' },
+      { icon: '📚', label: 'Education', detail: 'Schools and universities that give residents skills and opportunities.' },
+      { icon: '🚌', label: 'Infrastructure', detail: 'Roads, buses, trains, and utilities that keep a city connected and running.' },
+      { icon: '🌱', label: 'Sustainability', detail: 'Using resources responsibly so future generations also enjoy a good quality of life.' },
+      { icon: '🌡️', label: 'Climate', detail: 'Local weather patterns that affect comfort, health, and how cities are designed.' },
+      { icon: '🔗', label: 'Connections', detail: 'How transport and trade links join cities and regions, improving access to jobs and goods.' }
+    ];
+
+    const conceptGrid = document.getElementById('conceptGrid');
+    concepts.forEach((c, i) => {
+      const node = document.createElement('div');
+      node.className = 'concept-node';
+      node.innerHTML = `
+        <div class="node-icon">${c.icon}</div>
+        <div class="node-label">${c.label}</div>
+        <div class="concept-detail">${c.detail}</div>
+      `;
+      node.addEventListener('click', () => {
+        const wasActive = node.classList.contains('active');
+        document.querySelectorAll('.concept-node').forEach(n => n.classList.remove('active'));
+        if (!wasActive) {
+          node.classList.add('active');
+          awardXP(2);
+        }
+      });
+      conceptGrid.appendChild(node);
+    });
+
+    // --- Flashcards ---
+    const flashcards = [
+      { term: 'Liveability', def: 'A measure of how comfortable, safe, and enjoyable daily life is in a city.' },
+      { term: 'EIU', def: 'Economist Intelligence Unit — produces the Global Liveability Index ranking cities worldwide.' },
+      { term: 'Stability', def: 'How safe and politically calm a city is; low crime and civil unrest raise this score.' },
+      { term: 'Infrastructure', def: 'The physical systems a city depends on: roads, trains, water pipes, and power grids.' },
+      { term: 'Urban heat island', def: 'Cities are warmer than nearby rural areas due to concrete, buildings, and less vegetation.' },
+      { term: 'Green space', def: 'Parks, gardens, and tree-lined streets that improve air quality, mood, and biodiversity.' },
+      { term: 'Sustainability', def: 'Meeting today\'s needs without damaging resources for future generations.' },
+      { term: 'Air quality index', def: 'A scale that measures how clean or polluted outdoor air is, affecting public health.' },
+      { term: 'Urban planning', def: 'Designing and organising city layout to balance housing, transport, work, and nature.' },
+      { term: 'Biodiversity', def: 'The variety of living species in an area; cities with more green space tend to support more wildlife.' }
+    ];
+
+    let fcIndex = 0;
+    const mastered = new Set(JSON.parse(localStorage.getItem('sc_mastered') || '[]'));
+
+    function renderFlashcard() {
+      const fc = flashcards[fcIndex];
+      const card = document.getElementById('flashcard');
+      card.classList.remove('flipped');
+      document.getElementById('fcFront').textContent = fc.term;
+      document.getElementById('fcBack').textContent = fc.def;
+      document.getElementById('fcCounter').textContent = `${fcIndex + 1} / ${flashcards.length}`;
+      document.getElementById('fcMarkBtn').textContent = mastered.has(fcIndex) ? 'Unmark' : 'Mark as mastered';
+      document.getElementById('fcMastered').textContent = mastered.size;
+      document.getElementById('fcTotal').textContent = flashcards.length;
+    }
+
+    document.getElementById('flashcard').addEventListener('click', () => {
+      document.getElementById('flashcard').classList.toggle('flipped');
+    });
+    document.getElementById('flashcard').addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') document.getElementById('flashcard').classList.toggle('flipped');
+    });
+
+    document.getElementById('fcPrev').addEventListener('click', () => {
+      fcIndex = (fcIndex - 1 + flashcards.length) % flashcards.length;
+      renderFlashcard();
+    });
+    document.getElementById('fcNext').addEventListener('click', () => {
+      fcIndex = (fcIndex + 1) % flashcards.length;
+      renderFlashcard();
+      awardXP(1);
+    });
+    document.getElementById('fcMarkBtn').addEventListener('click', () => {
+      if (mastered.has(fcIndex)) {
+        mastered.delete(fcIndex);
+      } else {
+        mastered.add(fcIndex);
+        awardXP(5);
+      }
+      localStorage.setItem('sc_mastered', JSON.stringify([...mastered]));
+      renderFlashcard();
+    });
+
+    renderFlashcard();
+
+    // --- Challenges ---
+    const challenges = [
+      { id: 'c1', text: 'Use the Liveability Calculator in the main app and record your city\'s score.', xp: 15, badge: 'Calculator Pro' },
+      { id: 'c2', text: 'Score 6 or more on the Liveability & Environment Quiz.', xp: 20, badge: 'Quiz Ace' },
+      { id: 'c3', text: 'Win three City Battles in the main app.', xp: 25, badge: 'Battle Champion' },
+      { id: 'c4', text: 'Master all 10 flashcards on this page.', xp: 20, badge: 'Key Term Master' },
+      { id: 'c5', text: 'Add at least five notes to your study journal below.', xp: 10, badge: 'Note Taker' },
+      { id: 'c6', text: 'Complete all four reflection prompts.', xp: 20, badge: 'Deep Thinker' },
+      { id: 'c7', text: 'Explore all nine concepts on the concept map.', xp: 15, badge: 'Concept Explorer' },
+      { id: 'c8', text: 'Compare three different cities using the calculator and note the differences.', xp: 15, badge: 'City Analyst' }
+    ];
+
+    const completedChallenges = new Set(JSON.parse(localStorage.getItem('sc_challenges') || '[]'));
+
+    function renderChallenges() {
+      const list = document.getElementById('challengeList');
+      list.innerHTML = challenges.map(ch => `
+        <div class="challenge-item">
+          <input type="checkbox" id="${ch.id}" ${completedChallenges.has(ch.id) ? 'checked' : ''} aria-label="${ch.text}">
+          <div class="challenge-label ${completedChallenges.has(ch.id) ? 'done' : ''}">
+            ${ch.text} <span class="pill">+${ch.xp} XP</span>
+          </div>
+        </div>
+      `).join('');
+
+      challenges.forEach(ch => {
+        document.getElementById(ch.id).addEventListener('change', (e) => {
+          if (e.target.checked && !completedChallenges.has(ch.id)) {
+            completedChallenges.add(ch.id);
+            awardXP(ch.xp);
+          } else if (!e.target.checked) {
+            completedChallenges.delete(ch.id);
+            xp = Math.max(0, xp - ch.xp);
+            updateXPUI();
+          }
+          localStorage.setItem('sc_challenges', JSON.stringify([...completedChallenges]));
+          renderChallenges();
+          renderBadges();
+        });
+      });
+    }
+
+    function renderBadges() {
+      const row = document.getElementById('badgeRow');
+      row.innerHTML = challenges.map(ch => {
+        const unlocked = completedChallenges.has(ch.id);
+        return `<span class="badge ${unlocked ? '' : 'locked'}" title="${unlocked ? 'Unlocked!' : 'Complete the challenge to earn this badge'}">${unlocked ? '🏅' : '🔒'} ${ch.badge}</span>`;
+      }).join('');
+    }
+
+    renderChallenges();
+    renderBadges();
+
+    // --- Notes ---
+    let notes = JSON.parse(localStorage.getItem('sc_notes') || '[]');
+
+    function renderNotes() {
+      const ul = document.getElementById('noteList');
+      if (notes.length === 0) {
+        ul.innerHTML = '<li style="color: var(--muted); font-size: 0.9rem; border: none; background: none;">No notes yet. Add one above!</li>';
+        return;
+      }
+      ul.innerHTML = notes.map((note, i) => `
+        <li>
+          <span>${note}</span>
+          <button class="delete-note" data-index="${i}" aria-label="Delete note">×</button>
+        </li>
+      `).join('');
+      document.querySelectorAll('.delete-note').forEach(btn => {
+        btn.addEventListener('click', () => {
+          notes.splice(Number(btn.dataset.index), 1);
+          localStorage.setItem('sc_notes', JSON.stringify(notes));
+          renderNotes();
+        });
+      });
+    }
+
+    document.getElementById('addNoteBtn').addEventListener('click', () => {
+      const input = document.getElementById('noteInput');
+      const text = input.value.trim();
+      if (!text) return;
+      notes.push(text);
+      localStorage.setItem('sc_notes', JSON.stringify(notes));
+      input.value = '';
+      renderNotes();
+      awardXP(3);
+    });
+
+    renderNotes();
+
+    // --- Reflection ---
+    const reflectKeys = ['reflectQ1', 'reflectQ2', 'reflectQ3', 'reflectQ4'];
+    reflectKeys.forEach(key => {
+      const saved = localStorage.getItem(`sc_${key}`);
+      if (saved) document.getElementById(key).value = saved;
+    });
+
+    document.getElementById('saveReflection').addEventListener('click', () => {
+      let filled = 0;
+      reflectKeys.forEach(key => {
+        const val = document.getElementById(key).value.trim();
+        if (val) {
+          localStorage.setItem(`sc_${key}`, val);
+          filled++;
+        }
+      });
+      const result = document.getElementById('reflectionResult');
+      result.style.display = 'block';
+      if (filled === 4) {
+        result.innerHTML = '<p><strong>All four reflections saved!</strong> Excellent thinking — you\'ve earned a Deep Thinker badge when you tick that challenge.</p>';
+        awardXP(10);
+      } else {
+        result.innerHTML = `<p><strong>Saved ${filled} of 4 reflections.</strong> Complete the remaining prompts to deepen your understanding.</p>`;
+        awardXP(filled * 2);
+      }
+    });
+
+    document.getElementById('clearReflection').addEventListener('click', () => {
+      if (!confirm('Clear all saved reflections?')) return;
+      reflectKeys.forEach(key => {
+        localStorage.removeItem(`sc_${key}`);
+        document.getElementById(key).value = '';
+      });
+      const result = document.getElementById('reflectionResult');
+      result.style.display = 'block';
+      result.innerHTML = '<p class="muted">Reflections cleared.</p>';
+    });
+  </script>
+</body>
+</html>
